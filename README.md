@@ -7,7 +7,10 @@ A script for programatically accessing your data in the Apple Notes application.
 
 # Building
 
-The package is written using Apple's "JavaScript for Automation", part of the [Open Scripting Architecture (OSA)](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptX/Concepts/osa.html#//apple_ref/doc/uid/TP40001571) that essentially allows you to use JavaScript to do the same things that AppleScript does. To run the script run the following from the root of the repo:
+The package is written using Apple's "JavaScript for Automation", part of the [Open Scripting Architecture (OSA)](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptX/Concepts/osa.html#//apple_ref/doc/uid/TP40001571) that essentially allows you to use JavaScript to do the same things that AppleScript does. It must be run on macOS under the account/login that you want to access Apple Notes data from.
+
+To run the script run the following from the root of the repo:
 
     yarn start
 
+Note, you should look at the bottom of hte file to see what the default startup routine is defaulting too.

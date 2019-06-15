@@ -53,6 +53,12 @@ class Tools {
       }
     }
   }
+
+  static first(iterable) {
+    for (let v of iterable) {
+      return v
+    }
+  }
 }
 
 class NotesApp {
@@ -103,6 +109,14 @@ class NotesFolder {
     }
   }
 
+  /**
+   * Returns the note at the specified index.
+   * @param {Number} index
+   */
+  noteAt(index) {
+    return new NotesNote(this.rawFolder.notes[index])
+  }
+
   toString() {
     let json = { ...this }
     json.folders = []
@@ -115,7 +129,7 @@ class NotesFolder {
 
 class NotesNote {
   constructor(rawNote) {
-    this.rawNote = rawNote
+    this.rawAttachments = rawNote.attachments
     this.name = rawNote.name()
     this.id = rawNote.id()
     this.creationDate = new Date(rawNote.creationDate())
@@ -124,13 +138,13 @@ class NotesNote {
   }
 
   *attachments() {
-    for (let i = 0; i < this.rawNote.attachments.length; i++) {
-      yield new NotesAttachment(this.rawNote.attachments[i])
+    for (let i = 0; i < this.rawAttachments.length; i++) {
+      yield new NotesAttachment(this.rawAttachments[i])
     }
   }
 
   hasAttachments() {
-    return this.rawNote.attachments.length > 0
+    return this.rawAttachments.length > 0
   }
 
   save(path) {
@@ -153,10 +167,10 @@ class NotesNote {
 
 class NotesAttachment {
   constructor(rawAttachment) {
+    this.id = rawAttachment.id()
+    this.name = rawAttachment.name()
+    this.contentIdentifier = rawAttachment.contentIdentifier()
     this.rawAttachment = rawAttachment
-    this.id = this.rawAttachment.id()
-    this.name = this.rawAttachment.name()
-    this.contentIdentifier = this.rawAttachment.contentIdentifier()
   }
 
   save(path) {
@@ -176,49 +190,105 @@ class NotesAttachment {
   }
 }
 
-// testing stuff:
-function listFolders() {
-  const app = new NotesApp()
-  for (let f of app.folders()) {
-    console.log(f)
-  }
-}
-
-function listNotes() {
-  const app = new NotesApp()
-  for (let note of app.notes()) {
-    console.log("note:", note)
-  }
-}
-
-function listNotesWithAttachments() {
-  const app = new NotesApp()
-  let folder = null
-  for (let f of app.folders()) {
-    if (f.name === "AttachmentTest") folder = f
-  }
-
-  for (let note of folder.notes()) {
-    console.log(".")
-    if (note.hasAttachments()) {
-      console.log(note)
-      /* attachment data is already in note's toString
-      for (let attachment of note.attachments()) {
-        console.log(attachment)
-      }
-      */
+/**
+ * Testing stuff
+ */
+class Tests {
+  static listFolders() {
+    const app = new NotesApp()
+    for (let f of app.folders()) {
+      console.log(f)
     }
   }
+
+  static listNotes() {
+    const app = new NotesApp()
+    for (let note of app.notes()) {
+      console.log("note:", note)
+    }
+  }
+
+  static getAttachmentsTestFolder() {
+    const app = new NotesApp()
+    for (let f of app.folders()) {
+      if (f.name === "AttachmentTest") return f
+    }
+  }
+
+  static getFirstFolder() {
+    const app = new NotesApp()
+    for (let f of app.folders()) {
+      return f
+    }
+  }
+
+  static listNotesWithAttachments() {
+    const folder = Tests.getAttachmentsTestFolder()
+
+    for (let note of folder.notes()) {
+      console.log(".")
+      if (note.hasAttachments()) {
+        console.log(note)
+        for (let attachment of note.attachments()) {
+          console.log(attachment)
+        }
+      }
+    }
+  }
+
+  static toBoostnoteFile() {
+    // TODO: create a folder and get the folder ID:
+    const folderID = "6b0ce9f1d90d1302ed9a" //createFolder()
+    /* BELOW causes error `TypeError: Attempted to assign to readonly property. (-2700)`
+     
+    let iterable = Tests.getAttachmentsTestFolder().notes()
+    const nextObj = iterable.next()
+
+    console.log("value:", nextObj.value)
+    console.log("typeof", typeof nextObj.value)
+    console.log("constructor", nextObj.value.constructor)
+    console.log("constructor.name", nextObj.value.constructor.name)
+    console.log("keys:", Object.keys(nextObj))
+    debugger
+    const noteObj = Object.assign({}, nextObj.value)
+    //const valueProp = Object.getOwnPropertyDescriptor(nextObj, "value")
+    //const noteObj = valueProp.value
+    // Also fails:
+    //const noteObj = Tools.first(Tests.getAttachmentsTestFolder().notes())
+    */
+
+    // Also fails:
+    //const noteObj = Tests.getAttachmentsTestFolder().noteAt(0)
+    const noteObj = Tests.getFirstFolder().noteAt(0)
+    let content = ""
+    content += `createdAt: ${JSON.stringify(noteObj.creationDate)}\n`
+    content += `updatedAt: ${JSON.stringify(noteObj.modificationDate)}\n`
+    content += `type: "SNIPPET_NOTE"\n`
+    content += `folder: "${folderID}"\n`
+    content += `title: ${JSON.stringify(noteObj.name)}\n`
+    content += `tags: []\n`
+    content += `description: "Imported from Apple Notes note ID ${noteObj.id}"\n`
+    content += `snippets: [\n`
+    content += `  {\n`
+    content += `      linesHighlighted: []\n`
+    content += `      name: ${JSON.stringify(noteObj.name)}\n`
+    content += `      mode: "HTML"\n`
+    content += `      content: '''\n`
+    content += `${noteObj.body}`
+    content += `      '''\n`
+    content += `    }\n`
+    content += `]\n`
+    content += `isStarred: false\n`
+    content += `isTrashed: false\n`
+    Tools.writeTextToFile(
+      content,
+      `/Users/scott/Downloads/${Tools.uuidv4()}.cson`
+    )
+  }
 }
 
-function test() {
-  //listFolders()
-  //listNotes()
-  listNotesWithAttachments()
-  // console.log(Tools.uuidv4())
-  // write a note to a file
-  // const text = app.notes()[0].body()
-  //Tools.writeTextToFile(text, "/Users/scott/Downloads/note-test.html")
-}
-
-test()
+Tests.listFolders()
+//Tests.listNotes()
+//Tests.listNotesWithAttachments()
+//Tests.toBoostnoteFile()
+//console.log(Tools.uuidv4())
