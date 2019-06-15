@@ -1,0 +1,17 @@
+{
+  "name": "apple-notes-export",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MPL-2.0",
+  "scripts": {
+    "start": "osascript -l JavaScript index.js",
+    "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
+    "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\""
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "^1.18.2"
+  },
+  "description": "A script for programatically accessing your data in the Apple Notes application.",
+  "author": "Scott Willeke <scott@willeke.com>"
+}
