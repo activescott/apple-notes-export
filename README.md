@@ -14,3 +14,16 @@ To run the script run the following from the root of the repo:
     yarn start
 
 Note, you should look at the bottom of hte file to see what the default startup routine is defaulting too.
+
+# Todo
+
+- Boostnote export:
+  - Convert HTML to markdown rather than using snippits
+    - Use a bundler to create a compatible bundle via Rollup or webpack.
+      - refactor accordingly
+    - Update build scripts to leverage bundler
+  - Allow argv options for a folder to write to
+  - Abort if the folder exists (or allow an overrite argv? or make the path unique with an integer or something simple)
+  - Write attachments
+  - Link in attachments to note
+  - Write note title into body as well as title

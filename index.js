@@ -19,39 +19,11 @@ class Tools {
     })
   }
 
-  static writeTextToFile(text, file) {
-    var app = Application.currentApplication()
-    app.includeStandardAdditions = true
-    let openedFile = null
-    try {
-      // Convert the file to a string
-      var fileString = file.toString()
-      // Open the file for writing
-      openedFile = app.openForAccess(Path(fileString), {
-        writePermission: true
-      })
-      // Clear the file if content should be overwritten
-      //if (overwriteExistingContent) {
-      if (true) {
-        app.setEof(openedFile, { to: 0 })
-      }
-      // Write the new content to the file
-      app.write(text, { to: openedFile, startingAt: app.getEof(openedFile) })
-      console.log(`Write to file '${file}' complete.`)
-      // Close the file
-      app.closeAccess(openedFile)
-      openedFile = null
-    } catch (err) {
-      console.log("Error writing file:", err)
-    } finally {
-      if (openedFile) {
-        try {
-          app.closeAccess(openedFile)
-        } catch (error) {
-          console.log(`Couldn't close file: ${error}`)
-        }
-      }
-    }
+  static writeTextToFile(text, filePath) {
+    // For instantiating and calling ObjC/$ types see https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-10.html#//apple_ref/doc/uid/TP40014508-CH109-SW20
+    const str = $.NSString.alloc.initWithUTF8String(text)
+    str.writeToFileAtomically(filePath, true)
+    console.log(`Wote text to file '${filePath}'`)
   }
 
   static first(iterable) {
@@ -91,6 +63,7 @@ class NotesFolder {
     this.name = this.rawFolder.name()
     this.id = this.rawFolder.id()
   }
+
   /**
    * Generator yielding the `NotesFolder` objects for each folder in this folder.
    */
@@ -239,26 +212,6 @@ class Tests {
   static toBoostnoteFile() {
     // TODO: create a folder and get the folder ID:
     const folderID = "6b0ce9f1d90d1302ed9a" //createFolder()
-    /* BELOW causes error `TypeError: Attempted to assign to readonly property. (-2700)`
-     
-    let iterable = Tests.getAttachmentsTestFolder().notes()
-    const nextObj = iterable.next()
-
-    console.log("value:", nextObj.value)
-    console.log("typeof", typeof nextObj.value)
-    console.log("constructor", nextObj.value.constructor)
-    console.log("constructor.name", nextObj.value.constructor.name)
-    console.log("keys:", Object.keys(nextObj))
-    debugger
-    const noteObj = Object.assign({}, nextObj.value)
-    //const valueProp = Object.getOwnPropertyDescriptor(nextObj, "value")
-    //const noteObj = valueProp.value
-    // Also fails:
-    //const noteObj = Tools.first(Tests.getAttachmentsTestFolder().notes())
-    */
-
-    // Also fails:
-    //const noteObj = Tests.getAttachmentsTestFolder().noteAt(0)
     const noteObj = Tests.getFirstFolder().noteAt(0)
     let content = ""
     content += `createdAt: ${JSON.stringify(noteObj.creationDate)}\n`
