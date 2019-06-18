@@ -18,10 +18,15 @@ Note, you should look at the bottom of hte file to see what the default startup 
 # Todo
 
 - Boostnote export:
-  - Convert HTML to markdown rather than using snippits
+  - Convert HTML to markdown rather than using snippits:
     - Use a bundler to create a compatible bundle via Rollup or webpack.
-      - refactor accordingly
-    - Update build scripts to leverage bundler
+      - Rollup: Tried but it was gross. Try weback/babel?
+      - Update build scripts to leverage bundler
+      - refactor accordingly:
+        - Create a note writer strategy. One for boostnote
+        - Future: for raw html/md files
+  - Attempt to try to convert to markdown (MD)/plaintext:
+    - Prefer MD: Look at the html tags from the note. If they're all "simple" tags, then convert to MD (e.g. via https://pandoc.org via shell)
   - Allow argv options for a folder to write to
   - Abort if the folder exists (or allow an overrite argv? or make the path unique with an integer or something simple)
   - Write attachments
