@@ -75,6 +75,7 @@ class Tests {
     content += `      name: ${JSON.stringify(noteObj.name)}\n`
     content += `      mode: "HTML"\n`
     content += `      content: '''\n`
+    content += `${JSON.stringify(noteObj.name)}\n`
     content += `${noteObj.body}`
     content += `      '''\n`
     content += `    }\n`
@@ -93,11 +94,75 @@ class Tests {
       Tests.toBoostnoteFile(note)
     }
   }
+
+  /**
+   * I write a lot of notes in plain text or markdown in Apple Notes.
+   * Since Apple Notes Automation API only returns them as HTML, this routine attempts to "guess" if they should be saved as plain text/markdown.
+   */
+  static isPlainTextEligible(html) {
+    const elementNames = Tools.getHtmlElementNames(html)
+    const plainTextTags = [
+      "div",
+      "br",
+      "b",
+      "ul",
+      "ol",
+      "li",
+      "i",
+      "u",
+      "span",
+      "font",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6"
+    ]
+    const isEligible = elementNames.every(el => plainTextTags.includes(el))
+    if (!isEligible) {
+      console.log(
+        "*".repeat(60) + "\nineligible tags for plain text:",
+        elementNames.filter(el => !plainTextTags.includes(el))
+      )
+    }
+    return isEligible
+  }
+
+  /**
+   * lists notes that are not eligible for plain text
+   */
+  static listNonPlainTextNotes() {
+    const app = new NotesApp()
+    for (let note of app.notes()) {
+      let body = note.body
+      body = Tools.fixEmailAddressElements(body)
+      if (!Tests.isPlainTextEligible(body)) {
+        console.log("note not eligible for plain text:", note.name)
+        console.log("   Body:", note.body)
+        console.log()
+      }
+    }
+  }
+
+  static testfixEmailAddressElements() {
+    const tests = [
+      "<div>Wanda Taylor <wtaylor@cafex.com></div>",
+      "<div>brent.booth@plansource.com <brent.booth@plansource.com></div>",
+      "<div><b>samanthac@dropbox.com <samanthac@dropbox.com></b><br></div>",
+      "<div>Wanda Taylor <wtaylor@cafex.com></div>\n<div>brent.booth@plansource.com <brent.booth@plansource.com></div>"
+    ]
+    for (let t of tests) {
+      console.log(Tools.fixEmailAddressElements(t))
+    }
+  }
 }
 
 //Tests.listFolders()
 //Tests.listNotes()
 //Tests.listNotesWithAttachments()
 //Tests.toBoostnoteFile(Tests.getFirstFolder().noteAt(0))
-Tests.allNotesToBostnote()
+//Tests.allNotesToBostnote()
+Tests.listNonPlainTextNotes()
+//Tests.testfixEmailAddressElements() // yea!
 //console.log(Tools.uuidv4())
