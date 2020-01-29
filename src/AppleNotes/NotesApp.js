@@ -1,5 +1,6 @@
 import { NotesNote } from "./NotesNote"
 import { NotesFolder } from "./NotesFolder"
+import { NotesAccount } from "./NotesAccount"
 
 export class NotesApp {
   constructor() {
@@ -15,12 +16,18 @@ export class NotesApp {
     }
   }
 
+  *accounts() {
+    for (let i = 0; i < this.rawApp.accounts.length; i++) {
+      yield new NotesAccount(this.rawApp.accounts[i])
+    }
+  }
+
   /**
    * Generator function to produce `NotesNote` objects for each note in the app's root.
    */
   *notes() {
     for (let i = 0; i < this.rawApp.notes.length; i++) {
-      yield new NotesNote(this.rawApp.notes[i])
+      yield new NotesNote(this.rawApp.notes[i], null)
     }
   }
 }

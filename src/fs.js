@@ -1,3 +1,4 @@
+ObjC.import("sys/file")
 // for a lot of stuff in this file see https://developer.apple.com/documentation/foundation/filemanager
 
 export function writeTextToFile(text, filePath) {
@@ -14,17 +15,15 @@ export function resolveRelativePath(relativePath) {
 
 export function fileExists(atPath) {
   // see https://developer.apple.com/documentation/foundation/nsfilemanager
-  ObjC.import("sys/file")
   const fileMan = $.NSFileManager.defaultManager
   return fileMan.fileExistsAtPath(atPath)
 }
 
 export function createDir(path) {
-  ObjC.import("sys/file")
-  // see for the ref: https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-10.html#//apple_ref/doc/uid/TP40014508-CH109-SW28
   // see https://developer.apple.com/documentation/foundation/nsfilemanager/1407884-createdirectoryatpath?language=objc
   const fileMan = $.NSFileManager.defaultManager
   const createIntermediates = true
+  // for info on nil: https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-10.html#//apple_ref/doc/uid/TP40014508-CH109-SW26
   let nilAttributes = $()
   let nilError = $()
   fileMan.createDirectoryAtPathWithIntermediateDirectoriesAttributesError(
@@ -33,4 +32,15 @@ export function createDir(path) {
     nilAttributes,
     nilError
   )
+}
+
+export function moveItem(srcPath, dstPath) {
+  // https://developer.apple.com/documentation/foundation/nsfilemanager/1413529-moveitematpath?language=objc
+  const fileMan = $.NSFileManager.defaultManager
+  // for details on how to handle Ref: https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-10.html#//apple_ref/doc/uid/TP40014508-CH109-SW28
+  const refError = Ref()
+  fileMan.moveItemAtPathToPathError(srcPath, dstPath, refError)
+  if (refError[0]) {
+    throw new Error("Error calling moveItemAtPathToPathError:", refError[0])
+  }
 }

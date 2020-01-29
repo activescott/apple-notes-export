@@ -9,8 +9,16 @@
     "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
     "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\""
   },
-  "dependencies": {},
+  "dependencies": {
+    "@babel/polyfill": "^7.8.3",
+    "agentmarkdown": "^4.2.2"
+  },
   "devDependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/runtime": "^7.8.3",
+    "babel-loader": "^8.0.6",
     "prettier": "^1.18.2",
     "webpack": "^4.34.0",
     "webpack-cli": "^3.3.4"

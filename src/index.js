@@ -35,32 +35,39 @@ function parseArgs() {
 }
 
 function getOutputDir(exporterName) {
-  const outputDir = resolveRelativePath(`data/${exporterName}`)
-  if (fileExists(outputDir)) {
-    throw new Error(
-      `Output directory '${outputDir} already exists. Please remove this directory before running this exporter.`
-    )
+  const outputDirOrig = resolveRelativePath(`data/${exporterName}`)
+  let outputDir = outputDirOrig
+  let i = 0
+  while (fileExists(outputDir)) {
+    console.log("file exists:", outputDir)
+    i++
+    outputDir = outputDirOrig + i.toString()
   }
   return outputDir
 }
 
-function doExport(exporterName, outputDir) {
+async function doExport(exporterName, outputDir) {
+  console.log("Creating dir", outputDir, "...")
   createDir(outputDir)
-
+  console.log("Creating dir", outputDir, "complete.")
   const exportNoteFunc = exporterNameMap[exporterName]
   const app = new NotesApp()
-  for (let note of app.notes()) {
-    exportNoteFunc(note, outputDir)
+  for (let folder of app.folders()) {
+    for (let note of folder.notes()) {
+      await exportNoteFunc(note, outputDir)
+    }
   }
 }
 
-function main() {
+async function main() {
   const exporterName = parseArgs()
   console.log("Using exporter", exporterName, "...")
   const outputDir = getOutputDir(exporterName)
   console.log("Using output directory", outputDir, "...")
-  doExport(exporterName, outputDir)
+  await doExport(exporterName, outputDir)
   console.log("Export complete.")
 }
 
 main()
+  .then(() => console.log("Export completed successfully!"))
+  .catch(reason => console.error("Export completed with errors:", reason))

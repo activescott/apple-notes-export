@@ -21,7 +21,7 @@ export class NotesFolder {
    */
   *notes() {
     for (let i = 0; i < this.rawFolder.notes.length; i++) {
-      yield new NotesNote(this.rawFolder.notes[i])
+      yield new NotesNote(this.rawFolder.notes[i], this)
     }
   }
 

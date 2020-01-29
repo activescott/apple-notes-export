@@ -1,7 +1,10 @@
 import { NotesAttachment } from "./NotesAttachment"
+//import { NotesFolder } from "./NotesFolder"
 
 export class NotesNote {
-  constructor(rawNote) {
+  constructor(rawNote, folder) {
+    // note it is fine for folder to be null. if you get the note from NotesApp.notes it seems to be in a wicked invalid state.
+    this.folder = folder
     this.rawAttachments = rawNote.attachments
     this.name = rawNote.name()
     this.id = rawNote.id()

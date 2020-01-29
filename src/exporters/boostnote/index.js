@@ -1,4 +1,3 @@
-import { NotesApp } from "../../AppleNotes"
 import { Tools } from "../../Tools"
 import { writeTextToFile } from "../../fs"
 
@@ -6,7 +5,7 @@ import { writeTextToFile } from "../../fs"
  *
  * @param {NotesNote} noteObj A @see NotesNote object.
  */
-export function exportNote(noteObj, outputDir) {
+export async function exportNote(noteObj, outputDir) {
   if (!noteObj) throw new Error("noteObj must be provided.")
   if (!outputDir) throw new Error("outputDir must be provided.")
   // TODO: create a folder and get the folder ID:
@@ -33,12 +32,4 @@ export function exportNote(noteObj, outputDir) {
   content += `isStarred: false\n`
   content += `isTrashed: false\n`
   writeTextToFile(content, `${outputDir}/${Tools.uuidv4()}.cson`)
-}
-
-// example:
-function exportNotes() {
-  const app = new NotesApp()
-  for (let note of app.notes()) {
-    exportNote(note)
-  }
 }
