@@ -1,8 +1,10 @@
-import { fileExists, resolveRelativePath, createDir } from "./fs"
-import { args } from "./process"
 import { exportNote as exportBoostnote } from "./exporters/boostnote"
 import { exportNote as exportTiddly } from "./exporters/tiddlywiki"
 import { NotesApp } from "./AppleNotes"
+import { DispatchSemaphore } from "../packages/jsx/abstractions/DispatchSemaphore"
+import { args } from "../packages/jsx/abstractions/process"
+import { resolveRelativePath, fileExistsAtPath, createDir } from "../packages/jsx/abstractions/fs"
+import { logger } from "./lib/logutil"
 
 // maps exporter name to exportNote function:
 const exporterNameMap = {
@@ -38,7 +40,7 @@ function getOutputDir(exporterName) {
   const outputDirOrig = resolveRelativePath(`data/${exporterName}`)
   let outputDir = outputDirOrig
   let i = 0
-  while (fileExists(outputDir)) {
+  while (fileExistsAtPath(outputDir)) {
     console.log("file exists:", outputDir)
     i++
     outputDir = outputDirOrig + i.toString()
@@ -47,12 +49,14 @@ function getOutputDir(exporterName) {
 }
 
 async function doExport(exporterName, outputDir) {
-  console.log("Creating dir", outputDir, "...")
+  const log = logger("doExport")
+  log("Creating dir", outputDir, "...")
   createDir(outputDir)
-  console.log("Creating dir", outputDir, "complete.")
+  log("Creating dir", outputDir, "complete.")
   const exportNoteFunc = exporterNameMap[exporterName]
   const app = new NotesApp()
   for (let folder of app.folders()) {
+    log("folder:", folder.name)
     for (let note of folder.notes()) {
       await exportNoteFunc(note, outputDir)
     }
@@ -68,6 +72,6 @@ async function main() {
   console.log("Export complete.")
 }
 
-main()
-  .then(() => console.log("Export completed successfully!"))
-  .catch(reason => console.error("Export completed with errors:", reason))
+const result = main()
+
+DispatchSemaphore.waitOnPromise(result)

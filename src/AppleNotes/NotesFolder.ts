@@ -1,7 +1,11 @@
 import { NotesNote } from "./NotesNote"
 
 export class NotesFolder {
-  constructor(rawFolder) {
+  private readonly rawFolder: any
+  public readonly name: string
+  public readonly id: string
+
+  constructor(rawFolder: any) {
     this.rawFolder = rawFolder
     this.name = this.rawFolder.name()
     this.id = this.rawFolder.id()
@@ -10,7 +14,7 @@ export class NotesFolder {
   /**
    * Generator yielding the `NotesFolder` objects for each folder in this folder.
    */
-  *folders() {
+  *folders(): IterableIterator<NotesFolder> {
     for (let i = 0; i++; i < this.rawFolder.folders.length) {
       yield new NotesFolder(this.rawFolder.folders[i])
     }
@@ -19,7 +23,7 @@ export class NotesFolder {
   /**
    * Generator function to produce `NotesNote` objects for each note in this folder.
    */
-  *notes() {
+  *notes(): IterableIterator<NotesNote> {
     for (let i = 0; i < this.rawFolder.notes.length; i++) {
       yield new NotesNote(this.rawFolder.notes[i], this)
     }
@@ -29,16 +33,17 @@ export class NotesFolder {
    * Returns the note at the specified index.
    * @param {Number} index
    */
-  noteAt(index) {
-    return new NotesNote(this.rawFolder.notes[index])
+  noteAt(index): NotesNote {
+    return new NotesNote(this.rawFolder.notes[index], this)
   }
 
-  toString() {
-    let json = { ...this }
-    json.folders = []
-    for (let folder of this.folders()) {
-      this.folders.push(JSON.parse(folder.toString()))
+  toString(): string {
+    const json = {
+      name: this.name,
+      id: this.id,
+      folders: Array.from(this.folders()).map(f => JSON.parse(f.toString()))
     }
+    json.folders = []
     return JSON.stringify(json)
   }
 }

@@ -1,0 +1,11 @@
+{
+  "include": ["./**/*.ts"],
+  "compilerOptions": {
+    "lib": [
+      "ES6",
+      "ES2016.Array.Include",
+      "ES2015.Promise"
+    ],
+    "downlevelIteration": true
+  }
+}

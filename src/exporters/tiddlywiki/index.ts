@@ -1,22 +1,43 @@
-//import { AgentMarkdown } from "agentmarkdown"
-import { writeTextToFile } from "../../fs"
+import { AgentMarkdown } from "agentmarkdown"
+import { writeTextToFile, createDir } from "../../../packages/jsx/abstractions/fs"
+import { logger } from "../../lib/logutil"
 
 export async function exportNote(note, outputDir) {
+  const log = logger("tiddlywiki exportNote")
+
+  outputDir = outputDir + "/tiddlers"
+  createDir(outputDir)
+
   if (!note) throw new Error("note must be provided.")
   if (!outputDir) throw new Error("outputDir must be provided.")
 
   const resolveFilePath = fileName => `${outputDir}/${fileName}`
 
-  const title = note.name
+  // long titles end in a funky elipses character
+  const title = note.name.endsWith("…") ? note.name.slice(0, note.name.length - 1): note.name
+  log(title)
+
   // NOTE: AgentMarkdown doesn't run within the OSA host even with babel & webpack. So we're writing these files out as html here. Go back and create a new markdown process to convert separately
   const html = note.body
-  const markdown = html
-  //const markdown = await AgentMarkdown.produce(html)
-
-  const noteFilePath = resolveFilePath(safeFileName(title)) + ".html"
-
-  // write the note
-  writeTextToFile(markdown, noteFilePath)
+  let markdown = ""
+  let noteFilePath = resolveFilePath(safeFileName(title))
+  log("noteFilePath:", noteFilePath)
+  let contentType = ""
+  const CONVERT_TO_MARKDOWN = true
+  if (CONVERT_TO_MARKDOWN) {
+    contentType = "text/x-markdown"
+    noteFilePath = noteFilePath + ".md"
+    console["assert"] = () => null
+    markdown = await AgentMarkdown.produce(html)
+    writeTextToFile(markdown, noteFilePath)
+  } else {
+    // html
+    contentType = "text/html"
+    markdown = html
+    noteFilePath = noteFilePath + ".html"
+    // write the note
+    writeTextToFile(markdown, noteFilePath)
+  }
 
   // write the meta
   const tags = ["Apple Notes Imported"]
@@ -27,7 +48,7 @@ export async function exportNote(note, outputDir) {
     note.modificationDate,
     tags,
     title,
-    "text/html"
+    contentType
   )
   writeTextToFile(meta, noteFilePath + ".meta")
 

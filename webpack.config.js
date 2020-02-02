@@ -2,28 +2,40 @@ const path = require("path")
 
 module.exports = {
   mode: "development",
-  entry: "./src/index.js",
+  entry: "./src/index.ts",
   devtool: "(none)",
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist")
-  }
-  // babel config (this still won't run AgentMarkdown in OSAscript)
-  /*
+  },
+  resolve: {
+    extensions: [".ts", ".js"]
+  },
+  // babel config trying to run AgentMarkdown in OSAscript but somehow I can't get it to work (but it works in safari at https://agentmarkdown.now.sh)
   module: {
     rules: [
+      { test: /\.ts$/, loader: "ts-loader" },
       {
         test: /\.m?js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env'],
-            plugins: ['@babel/plugin-transform-runtime']
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: {
+                    safari: "13"
+                  },
+                  useBuiltIns: "usage",
+                  corejs: 3
+                }
+              ]
+            ]
           }
         }
       }
     ]
   }
-  */
 }

@@ -1,0 +1,3 @@
+- convert files to markdown: *.html => *.md
+- rewrite *.html.meta => *.md.meta (no conversion)
+- add attachments to output.

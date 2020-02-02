@@ -1,12 +1,16 @@
 export class NotesAttachment {
-  constructor(rawAttachment) {
+  public readonly id: string
+  public readonly name: string
+  public readonly contentIdentifier: string
+
+  constructor(private readonly rawAttachment: any) {
     this.id = rawAttachment.id()
     this.name = rawAttachment.name()
     this.contentIdentifier = rawAttachment.contentIdentifier()
     this.rawAttachment = rawAttachment
   }
 
-  save(path) {
+  save(path: string): void {
     const pathObj = Path(path)
     this.rawAttachment.save({
       in: pathObj,

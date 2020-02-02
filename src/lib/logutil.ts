@@ -1,0 +1,1 @@
+export const logger = (prefix: string) => (message?: any, ...optionalParams: any[]) => console.log(`[${prefix}] ` + message, optionalParams)

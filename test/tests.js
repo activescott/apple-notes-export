@@ -1,4 +1,4 @@
-import { writeTextToFile } from "../src/fs"
+import { writeTextToFile } from "../src/CoreFoundation/fs"
 
 /**
  * Testing stuff

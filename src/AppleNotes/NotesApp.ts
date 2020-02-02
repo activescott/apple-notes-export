@@ -3,6 +3,7 @@ import { NotesFolder } from "./NotesFolder"
 import { NotesAccount } from "./NotesAccount"
 
 export class NotesApp {
+  private readonly rawApp: Application
   constructor() {
     this.rawApp = Application("Notes")
   }
@@ -10,7 +11,7 @@ export class NotesApp {
   /**
    * Generator yielding the `NotesFolder` objects for each folder in the app's root.
    */
-  *folders() {
+  *folders(): IterableIterator<NotesFolder> {
     for (let i = 0; i < this.rawApp.folders.length; i++) {
       yield new NotesFolder(this.rawApp.folders[i])
     }

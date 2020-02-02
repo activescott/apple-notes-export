@@ -1,5 +1,5 @@
 import { Tools } from "../../Tools"
-import { writeTextToFile } from "../../fs"
+import { writeTextToFile } from "../../../packages/jsx/abstractions/fs"
 
 /**
  *
