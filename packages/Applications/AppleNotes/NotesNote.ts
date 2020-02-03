@@ -10,7 +10,7 @@ export class NotesNote {
   public readonly creationDate: Date
   public readonly modificationDate: Date
   public readonly body: any
-  
+
   constructor(private readonly rawNote: any, folder: NotesFolder) {
     // note it is fine for folder to be null. if you get the note from NotesApp.notes it seems to be in a wicked invalid state.
     this.folder = folder
@@ -41,10 +41,10 @@ export class NotesNote {
   }
 
   toString(): string {
-    let json = {
+    const json = {
       ...this,
       attachments: Array.from(this.attachments()).map(a => a.toJson())
-    }    
+    }
     return JSON.stringify(json)
   }
 }

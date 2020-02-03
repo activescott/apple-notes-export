@@ -6,8 +6,9 @@
   "scripts": {
     "build": "rm -f ./dist/*.* && webpack  && echo ''",
     "start": "yarn build && osascript -l JavaScript dist/bundle.js",
-    "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
-    "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\""
+    "eslint": "./node_modules/.bin/eslint . --ext ts,tsx,js,jsx",
+    "lint": "./node_modules/.bin/prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,md,yml,json,html}\" && yarn run eslint",
+    "lint-fix": "./node_modules/.bin/prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,md,yml,json,html}\" && yarn run eslint --fix"
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.3",
@@ -15,12 +16,17 @@
     "core-js": "3"
   },
   "devDependencies": {
+    "@activescott/eslint-config": "^1.1.2",
     "@babel/core": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
     "@babel/runtime": "^7.8.3",
+    "@typescript-eslint/eslint-plugin": "^2.18.0",
+    "@typescript-eslint/parser": "^2.18.0",
     "babel-loader": "^8.0.6",
-    "prettier": "^1.18.2",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "prettier": "^1.19.1",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
     "webpack": "^4.34.0",

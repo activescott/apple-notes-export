@@ -32,7 +32,8 @@ export class DispatchSemaphore {
    * NOTE: OSA doesn't wait on outstanding promises, so the process ends before then/catch are called and no errors are reported to stdout!
    */
   static waitOnPromise<T>(promise: Promise<T>): T {
-    const log = (message?: any, ...optionalParams: any[]) => console.log("[waitOnPromise] " + message, optionalParams)
+    const log = (message?: any, ...optionalParams: any[]) =>
+      console.log("[waitOnPromise] " + message, optionalParams)
     let finalResult: T = undefined
     let finalReason = undefined
 

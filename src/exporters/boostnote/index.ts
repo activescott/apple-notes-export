@@ -1,11 +1,15 @@
-import { Tools } from "../../Tools"
 import { writeTextToFile } from "../../../packages/jsx/abstractions/fs"
+import { NotesNote } from "../../../packages/Applications/AppleNotes/NotesNote"
+import { uuidv4 } from "../../../test/tools"
 
 /**
  *
  * @param {NotesNote} noteObj A @see NotesNote object.
  */
-export async function exportNote(noteObj, outputDir) {
+export async function exportNote(
+  noteObj: NotesNote,
+  outputDir: string
+): Promise<void> {
   if (!noteObj) throw new Error("noteObj must be provided.")
   if (!outputDir) throw new Error("outputDir must be provided.")
   // TODO: create a folder and get the folder ID:
@@ -31,5 +35,5 @@ export async function exportNote(noteObj, outputDir) {
   content += `]\n`
   content += `isStarred: false\n`
   content += `isTrashed: false\n`
-  writeTextToFile(content, `${outputDir}/${Tools.uuidv4()}.cson`)
+  writeTextToFile(content, `${outputDir}/${uuidv4()}.cson`)
 }

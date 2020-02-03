@@ -1,19 +1,28 @@
 import { exportNote as exportBoostnote } from "./exporters/boostnote"
 import { exportNote as exportTiddly } from "./exporters/tiddlywiki"
-import { NotesApp } from "./AppleNotes"
+import { NotesApp } from "../packages/Applications/AppleNotes"
 import { DispatchSemaphore } from "../packages/jsx/abstractions/DispatchSemaphore"
 import { args } from "../packages/jsx/abstractions/process"
-import { resolveRelativePath, fileExistsAtPath, createDir } from "../packages/jsx/abstractions/fs"
-import { logger } from "./lib/logutil"
+import {
+  resolveRelativePath,
+  fileExistsAtPath,
+  createDir
+} from "../packages/jsx/abstractions/fs"
+import { logger } from "./lib/logger"
 
+/* eslint-disable no-console */
+
+type Exporter = "tiddlywiki" | "boostnote"
 // maps exporter name to exportNote function:
 const exporterNameMap = {
   boostnote: exportBoostnote,
   tiddlywiki: exportTiddly
 }
 
-// read args, expect the name of an exporter in exporters/<name> to be provided.
-function parseArgs() {
+/**
+ * read args, expect the name of an exporter in exporters/<name> to be provided.
+ */
+function parseArgs(): string {
   // console.log("arguments:", args())
   // with no arguments looks like this: ["/usr/bin/osascript","-l","JavaScript","dist/bundle.js"]
   const a = args()
@@ -36,8 +45,10 @@ function parseArgs() {
   return exporterName
 }
 
-function getOutputDir(exporterName) {
-  const outputDirOrig = resolveRelativePath(`data/${exporterName}`)
+function getOutputDir(exporterName: Exporter): string {
+  const outputDirOrig = resolveRelativePath(
+    `~/Downloads/apple-notes-export/${exporterName}`
+  )
   let outputDir = outputDirOrig
   let i = 0
   while (fileExistsAtPath(outputDir)) {
@@ -48,28 +59,31 @@ function getOutputDir(exporterName) {
   return outputDir
 }
 
-async function doExport(exporterName, outputDir) {
+async function doExport(
+  exporterName: Exporter,
+  outputDir: string
+): Promise<void> {
   const log = logger("doExport")
   log("Creating dir", outputDir, "...")
   createDir(outputDir)
   log("Creating dir", outputDir, "complete.")
   const exportNoteFunc = exporterNameMap[exporterName]
   const app = new NotesApp()
-  for (let folder of app.folders()) {
+  for (const folder of app.folders()) {
     log("folder:", folder.name)
-    for (let note of folder.notes()) {
+    for (const note of folder.notes()) {
       await exportNoteFunc(note, outputDir)
     }
   }
 }
 
-async function main() {
+async function main(): Promise<void> {
   const exporterName = parseArgs()
   console.log("Using exporter", exporterName, "...")
-  const outputDir = getOutputDir(exporterName)
+  const outputDir = getOutputDir(exporterName as Exporter)
   console.log("Using output directory", outputDir, "...")
-  await doExport(exporterName, outputDir)
-  console.log("Export complete.")
+  await doExport(exporterName as Exporter, outputDir)
+  console.log(`Export completed successfully. Saved to ${outputDir}`)
 }
 
 const result = main()

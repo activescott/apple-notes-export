@@ -7,9 +7,9 @@ declare class NSObject<T extends NSObject<T>> {
   /**
    * Returns a new instance of the receiving class.
    */
-  alloc: T
+  public alloc: T
   /**
    * Implemented by subclasses to initialize a new object (the receiver) immediately after memory for it has been allocated.
    */
-  init: T
+  public init: T
 }

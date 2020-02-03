@@ -2,16 +2,18 @@
  * https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-10.html#//apple_ref/doc/uid/TP40014508-CH109-SW54
  */
 declare class Automation {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   /**
    * The Automation object has a getDisplayString method that allows you to pass in an object and print it as source text or a human-readable display string.
    * Passing in true as the second parameter to getDisplayString will print the object as a display string instead of source text.
    */
-  getDisplayString(object: any, asDisplayString?: boolean): string
+  public getDisplayString(object: any, asDisplayString?: boolean): string
+  /* eslint-disable @typescript-eslint/no-explicit-any */
 }
 
 declare class Application {
-  static currentApplication(): any
   [name: string]: any
+  public static currentApplication(): any
 }
 
 /**
@@ -41,6 +43,7 @@ declare function Path(str: string): Path
 //TODO: delay
 
 declare interface Console {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   log(message?: any, ...optionalParams: any[]): void
 }
 

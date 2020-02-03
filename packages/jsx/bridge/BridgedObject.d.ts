@@ -11,6 +11,6 @@ interface BridgedObject<TJSType> {
    * To determine if a bridged object is actually wrapping a nil pointer, you can call the isNil() method.
    */
   isNil(): boolean
-  getProperty(key: string): any
-  setProperty<TPropType = any>(key: string, value: TPropType)
+  getProperty<T>(key: string): T
+  setProperty<TPropType>(key: string, value: TPropType)
 }

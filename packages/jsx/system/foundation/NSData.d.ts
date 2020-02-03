@@ -1,2 +1,1 @@
-declare class NSData extends NSObject<NSData> {
-}
+declare class NSData extends NSObject<NSData> {}
