@@ -54,7 +54,7 @@ export function createDir(path): void {
  * Creates a file at the given location.
  * If a file already exists at path, this method overwrites the contents of that file if the current process has the appropriate privileges to do so.
  */
-export function createFileAtPath(path) {
+export function createFileAtPath(path): void {
   const nilContents = $()
   const nilAttributes = $()
   $.NSFileManager.defaultManager.createFileAtPathContentsAttributes(
@@ -64,7 +64,7 @@ export function createFileAtPath(path) {
   )
 }
 
-export function moveItem(srcPath, dstPath) {
+export function moveItem(srcPath, dstPath): void {
   // for details on how to handle Ref: https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-10.html#//apple_ref/doc/uid/TP40014508-CH109-SW28
   const refError = Ref<NSError>()
   $.NSFileManager.defaultManager.moveItemAtPathToPathError(

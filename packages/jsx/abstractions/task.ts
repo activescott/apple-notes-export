@@ -5,7 +5,7 @@
  * @param {(NSFileHandle|NSPipe)} stdin standard input for the receiver
  * @param {(NSFileHandle|NSPipe)} stdout standard output for the receiver
  */
-export function launchTask(executable, args, stdin, stdout) {
+export function launchTask(executable, args, stdin, stdout): void {
   // launch it:
   const task = $.NSTask.alloc.init
   task.launchPath = executable

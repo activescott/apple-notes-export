@@ -1,11 +1,10 @@
-import { NotesNote } from "./NotesNote"
+import { NotesNote, NotesRawNote } from "./NotesNote"
 
 export class NotesFolder {
-  private readonly rawFolder: any
   public readonly name: string
   public readonly id: string
 
-  constructor(rawFolder: any) {
+  public constructor(private readonly rawFolder: NotesRawFolder) {
     this.rawFolder = rawFolder
     this.name = this.rawFolder.name()
     this.id = this.rawFolder.id()
@@ -14,7 +13,7 @@ export class NotesFolder {
   /**
    * Generator yielding the `NotesFolder` objects for each folder in this folder.
    */
-  *folders(): IterableIterator<NotesFolder> {
+  public *folders(): IterableIterator<NotesFolder> {
     for (let i = 0; i++; i < this.rawFolder.folders.length) {
       yield new NotesFolder(this.rawFolder.folders[i])
     }
@@ -23,7 +22,7 @@ export class NotesFolder {
   /**
    * Generator function to produce `NotesNote` objects for each note in this folder.
    */
-  *notes(): IterableIterator<NotesNote> {
+  public *notes(): IterableIterator<NotesNote> {
     for (let i = 0; i < this.rawFolder.notes.length; i++) {
       yield new NotesNote(this.rawFolder.notes[i], this)
     }
@@ -33,11 +32,11 @@ export class NotesFolder {
    * Returns the note at the specified index.
    * @param {Number} index
    */
-  noteAt(index): NotesNote {
+  public noteAt(index): NotesNote {
     return new NotesNote(this.rawFolder.notes[index], this)
   }
 
-  toString(): string {
+  public toString(): string {
     const json = {
       name: this.name,
       id: this.id,
@@ -46,4 +45,11 @@ export class NotesFolder {
     json.folders = []
     return JSON.stringify(json)
   }
+}
+
+export interface NotesRawFolder {
+  notes: NotesRawNote[]
+  folders: NotesRawFolder[]
+  id(): string
+  name(): string
 }

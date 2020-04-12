@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 ObjC.import("dispatch")
 
 /**
@@ -7,33 +8,17 @@ ObjC.import("dispatch")
 export class DispatchSemaphore {
   private sema: dispatch_semaphore_t
 
-  constructor(value: number) {
+  public constructor(value: number) {
     this.sema = $.dispatch_semaphore_create(value)
-  }
-
-  /**
-   * Waits for (decrements) a semaphore.
-   * @param timeout
-   */
-  wait(timeout: number) {
-    return $.dispatch_semaphore_wait(this.sema, timeout)
-  }
-
-  waitForever(): number {
-    return $.dispatch_semaphore_wait(this.sema, $.DISPATCH_TIME_FOREVER)
-  }
-
-  signal() {
-    return $.dispatch_semaphore_signal(this.sema)
   }
 
   /**
    * Blocks until the specified promise completes.
    * NOTE: OSA doesn't wait on outstanding promises, so the process ends before then/catch are called and no errors are reported to stdout!
    */
-  static waitOnPromise<T>(promise: Promise<T>): T {
-    const log = (message?: any, ...optionalParams: any[]) =>
-      console.log("[waitOnPromise] " + message, optionalParams)
+  public static waitOnPromise<T>(promise: Promise<T>): T {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+    const log = (message?: any, ...optionalParams: any[]): void => null //console.log("[waitOnPromise] " + message, optionalParams)
     let finalResult: T = undefined
     let finalReason = undefined
 
@@ -61,5 +46,21 @@ export class DispatchSemaphore {
     } else {
       return finalResult
     }
+  }
+
+  /**
+   * Waits for (decrements) a semaphore.
+   * @param timeout
+   */
+  public wait(timeout: number): void {
+    return $.dispatch_semaphore_wait(this.sema, timeout)
+  }
+
+  public waitForever(): number {
+    return $.dispatch_semaphore_wait(this.sema, $.DISPATCH_TIME_FOREVER)
+  }
+
+  public signal(): number {
+    return $.dispatch_semaphore_signal(this.sema)
   }
 }

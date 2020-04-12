@@ -3,14 +3,14 @@ export class NotesAttachment {
   public readonly name: string
   public readonly contentIdentifier: string
 
-  constructor(private readonly rawAttachment: any) {
+  public constructor(private readonly rawAttachment: NotesRawAttachment) {
     this.id = rawAttachment.id()
     this.name = rawAttachment.name()
     this.contentIdentifier = rawAttachment.contentIdentifier()
     this.rawAttachment = rawAttachment
   }
 
-  save(path: string): void {
+  public save(path: string): void {
     const pathObj = Path(path)
     this.rawAttachment.save({
       in: pathObj,
@@ -18,11 +18,22 @@ export class NotesAttachment {
     })
   }
 
-  toJson() {
+  public toJson(): {
+    id: string
+    name: string
+    contentIdentifier: string
+  } {
     return { ...this }
   }
 
-  toString() {
+  public toString(): string {
     return JSON.stringify(this.toJson())
   }
+}
+
+export interface NotesRawAttachment {
+  save(arg0: { in: Path; as: string })
+  contentIdentifier(): string
+  name(): string
+  id(): string
 }

@@ -24,7 +24,7 @@ export async function exportNote(
   const title = note.name.endsWith("…")
     ? note.name.slice(0, note.name.length - 1)
     : note.name
-  log(title)
+  log(`exporting note '${title}'`)
 
   const html = note.body
   let markdown = ""
