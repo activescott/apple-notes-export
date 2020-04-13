@@ -1,10 +1,14 @@
 import { AgentMarkdown } from "agentmarkdown"
 import {
   writeTextToFile,
-  createDir
+  createDir,
+  fileExistsAtPath
 } from "../../../packages/jsx/abstractions/fs"
 import { logger } from "../../lib/logger"
 import { NotesNote } from "../../../packages/Applications/AppleNotes/NotesNote"
+import { NotesAttachment } from "../../../packages/Applications/AppleNotes/NotesAttachment"
+import * as mimeTypes from "mime-types"
+import { parse } from "../../../packages/jsx/abstractions/path"
 
 export async function exportNote(
   note: NotesNote,
@@ -18,17 +22,14 @@ export async function exportNote(
   if (!note) throw new Error("note must be provided.")
   if (!outputDir) throw new Error("outputDir must be provided.")
 
-  const resolveFilePath = (fileName): string => `${outputDir}/${fileName}`
-
-  // long titles end in a funky elipses character
-  const title = note.name.endsWith("…")
-    ? note.name.slice(0, note.name.length - 1)
-    : note.name
-  log(`exporting note '${title}'`)
+  log(`exporting note '${noteTitle(note)}'`)
 
   const html = note.body
   let markdown = ""
-  let noteFilePath = resolveFilePath(safeFileName(title))
+  let noteFilePath = resolveFilePathUnique(
+    outputDir,
+    safeFileName(noteTitle(note))
+  )
   let contentType = ""
   const CONVERT_TO_MARKDOWN = true
   if (CONVERT_TO_MARKDOWN) {
@@ -55,17 +56,108 @@ export async function exportNote(
     tags.push(note.folder.name)
     tags.push("Apple Notes Folder " + note.folder.name)
   }
-
+  if (hasAttachments(note)) {
+    tags.push(attachmentTagName(noteTitle(note)))
+  }
   const meta = createMeta(
     note.creationDate,
     note.modificationDate,
     tags,
-    title,
+    noteTitle(note),
     contentType
   )
   writeTextToFile(meta, noteFilePath + ".meta")
 
-  //TODO: write attachments
+  // write attachments
+  for (const attachment of note.attachments()) {
+    log(`exporting attachment: ${attachment.name}`)
+    exportAttachment(attachment, outputDir, noteTitle(note), tags)
+  }
+}
+
+/**
+ * Returns a path resolved for the given file; also ensures it is unique by adding a postfix as needed
+ * @param outputDir output dir for the file
+ * @param fileName the file name
+ */
+const resolveFilePathUnique = (outputDir, fileName): string => {
+  let counter = -1
+  let path = null
+  do {
+    if (++counter > 0) {
+      const parts = parse(fileName)
+      path = `${outputDir}/${parts.name} (${counter})${parts.ext}`
+    } else {
+      path = `${outputDir}/${fileName}`
+    }
+  } while (fileExistsAtPath(path))
+  return path
+}
+
+const hasAttachments = (note: NotesNote): boolean => {
+  // eslint-disable-next-line no-empty-pattern
+  for (const {} of note.attachments()) {
+    return true
+  }
+  return false
+}
+
+// NOTE: long titles end in a funky ellipses character
+const noteTitle = (note: NotesNote): string =>
+  note.name.endsWith("…") ? note.name.slice(0, note.name.length - 1) : note.name
+
+const attachmentTagName = (noteTitle: string): string =>
+  `Attachments for ${noteTitle}`
+
+function exportAttachment(
+  attachment: NotesAttachment,
+  outputDir: string,
+  noteTitle: string,
+  notesTags: string[]
+): void {
+  let hasSaveError = false
+  const attachmentFilePath = resolveFilePathUnique(
+    outputDir,
+    safeFileName(attachment.name)
+  )
+  try {
+    attachment.save(attachmentFilePath)
+  } catch (err) {
+    hasSaveError = true
+
+    console.log("\n" + "*".repeat(50))
+    console.log(
+      `Error saving attachment ${attachment.name} of note ${noteTitle}!`
+    )
+    console.log("*".repeat(50) + "\n")
+
+    // TODO: Pass in a command line argument that allows continuing on failures; by default fail and stop
+
+    return
+  }
+
+  // save the meta
+  // NOTE: the note includes a special tag to link the attachments & parent note
+  const meta = createMeta(
+    attachment.creationDate,
+    attachment.modificationDate,
+    notesTags,
+    attachment.name,
+    contentTypeForAttachment(attachment)
+  )
+  writeTextToFile(meta, attachmentFilePath + ".meta")
+}
+
+const contentTypeForAttachment = (attachment: NotesAttachment): string => {
+  const fallback = "application/octet-stream"
+  // first look for a file extension:
+  const parts = attachment.name.split(".")
+  if (parts.length > 1) {
+    const t = mimeTypes.lookup(parts[parts.length - 1])
+    return t ? t : fallback
+  } else {
+    return fallback
+  }
 }
 
 const safeFileName = (fileName: string): string => {
@@ -74,19 +166,24 @@ const safeFileName = (fileName: string): string => {
   return fileName.replace(matchForbiddenChars, "_")
 }
 
-const createMeta = (
+function createMeta(
   created: Date,
   modified: Date,
   tags: string[],
   title: string,
-  contentType: string
-): string => `created: ${dateStr(created)}
+  contentType: string = ""
+): string {
+  let str = `created: ${dateStr(created)}
 creator: https://github.com/activescott/apple-notes-export
 modified: ${dateStr(modified)}
 tags: ${tagsStr(tags)}
 title: ${title}
-type: ${contentType}
 `
+  if (contentType) {
+    str += `type: ${contentType}\n`
+  }
+  return str
+}
 
 const tagsStr = (tagsArray: string[]): string =>
   tagsArray.map(tag => (tag.includes(" ") ? `[[${tag}]]` : tag)).join(" ")

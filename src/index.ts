@@ -30,6 +30,7 @@ Commands:
 
 Options:
   -f, --filter  Specifies a regex to filter note names by
+  -i, --ignore  Ignore an existing output directory, and use it anyway
   -h, --help    Show this help message
 
 `)
@@ -40,13 +41,15 @@ Options:
  */
 function parseArgs(): {
   exporterName: string
-  filter: string
+  filter: string,
+  ignoreExistingOutputDir: boolean
 } {
   const APP_ARGS_START = 4
   const argv = minimist(args().slice(APP_ARGS_START), {
     alias: {
       help: "h",
-      filter: "f"
+      filter: "f",
+      ignore: "i"
     }
   })
 
@@ -73,17 +76,18 @@ function parseArgs(): {
 
   return {
     exporterName,
-    filter: argv.filter ?? ""
+    filter: argv.filter ?? "",
+    ignoreExistingOutputDir: argv.ignore ? true : false
   }
 }
 
-function getOutputDir(exporterName: Exporter): string {
+function getOutputDir(exporterName: Exporter, ignoreExistingOutputDir: boolean): string {
   const outputDirOrig = resolveRelativePath(
     `~/Downloads/apple-notes-export/${exporterName}`
   )
   let outputDir = outputDirOrig
   let i = 0
-  while (fileExistsAtPath(outputDir)) {
+  while (fileExistsAtPath(outputDir) && !ignoreExistingOutputDir) {
     console.log("file exists:", outputDir)
     i++
     outputDir = outputDirOrig + i.toString()
@@ -117,7 +121,7 @@ async function doExport(
 async function main(): Promise<void> {
   const args = parseArgs()
   console.log(`Using exporter ${args.exporterName} ...`)
-  const outputDir = getOutputDir(args.exporterName as Exporter)
+  const outputDir = getOutputDir(args.exporterName as Exporter, args.ignoreExistingOutputDir)
   console.log(`Using output directory ${outputDir} ...`)
   await doExport(args.exporterName as Exporter, outputDir, args.filter)
   console.log(`Export completed successfully. Saved to ${outputDir}`)
