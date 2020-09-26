@@ -3,19 +3,21 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-A script to export Apple Notes to TiddlyWiki, Boostnote, and more!
+A tool to export Apple Notes to Markdown, TiddlyWiki, Boostnote, and more!
 
 ## Usage
 
 It must be run on macOS under the account/login that you want to access Apple Notes data from.
 
-To run the script run the following from the root of the repo:
+To run the tool run the following from the root of the repo:
 
-Export to tiddlywiki:
+NOTE: Tiddlywiki essentially stores files as markdown files (e.g. `filename.md`) with an adjacent `.meta` file (e.g. `filename.md.meta`). So if you want your Apple Notes exported to plain markdown files use TiddlyWiki.
 
-    yarn start tiddlywiki
+To export to tiddlywiki/markdown:
 
-It will export all notes, next go to the output directory that it exported to (by default to `~/Downloads/apple-notes-export/tiddlywiki/`)
+    npm start tiddlywiki
+
+The above will export all notes, next go to the output directory that it exported to (by default to `~/Downloads/apple-notes-export/tiddlywiki/`)
 
     cd ~/Downloads/apple-notes-export/tiddlywiki/
 
@@ -37,6 +39,14 @@ Click on the **More** tab on the right sidebar. Then select the **All** tab belo
 
 Click on the **More** tab on the right sidebar. Then select the **Tags** tab below it. You should see tags for all of your folders from Apple Notes!
 
+If you want to filter by a specific note use the `--filter` arg:
+
+    npm run start -- tiddlywiki --filter "my note name"
+
+For more options, run
+
+    npm run start -- tiddlywiki --filter "my note name"
+
 ## Boostnote
 
 TODO!!!
@@ -44,7 +54,7 @@ TODO!!!
 **NOTE: Boostenote support worked at one moment in time and I imagine it is still pretty close, but it definitely needs work. I'd love contributions!**
 
     # export to boostnote:
-    yarn start boostnote
+    npm start boostnote
 
 ## Contributing
 
@@ -66,6 +76,10 @@ The big thing to note is that on the surface this looks like a Node.js/TypeScrip
 
 ## Todo
 
-- Lint: @activescott/lint-config
-- shebang bin to make this easier to run than using `yarn start` so it could be run with `npx` directly.
+- Tests:
+  - exporters: unit tests (mock out jsx, etc.)
+    - unit test `exportNote` function of each exporter, mock `NotesNote`
+  - for `packages/Applications/AppleNotes`:
+    - mock out the `raw*` stuff and put a unit test for each.
+- shebang bin to make this easier to run than using `npm start` so it could be run with `npx` directly.
 - Break `packages/jsx/*` out into it's own published package. A fair bit of value has built up in there that is probably worth publishing and testing independently.

@@ -80,7 +80,7 @@ export async function exportNote(
  * @param outputDir output dir for the file
  * @param fileName the file name
  */
-const resolveFilePathUnique = (outputDir, fileName): string => {
+const resolveFilePathUnique = (outputDir: string, fileName: string): string => {
   let counter = -1
   let path = null
   do {
@@ -162,6 +162,7 @@ const contentTypeForAttachment = (attachment: NotesAttachment): string => {
 
 const safeFileName = (fileName: string): string => {
   // although this isn't perfect, it seemed like a safe set: https://www.ibm.com/support/knowledgecenter/SSLTBW_2.1.0/com.ibm.zos.v2r1.bpxa400/bpxug469.htm
+  if (!fileName) fileName = "null"
   const matchForbiddenChars = /[^A-Za-z0-9._-]/gi
   return fileName.replace(matchForbiddenChars, "_")
 }

@@ -41,7 +41,7 @@ Options:
  */
 function parseArgs(): {
   exporterName: string
-  filter: string,
+  filter: string
   ignoreExistingOutputDir: boolean
 } {
   const APP_ARGS_START = 4
@@ -81,7 +81,10 @@ function parseArgs(): {
   }
 }
 
-function getOutputDir(exporterName: Exporter, ignoreExistingOutputDir: boolean): string {
+function getOutputDir(
+  exporterName: Exporter,
+  ignoreExistingOutputDir: boolean
+): string {
   const outputDirOrig = resolveRelativePath(
     `~/Downloads/apple-notes-export/${exporterName}`
   )
@@ -121,7 +124,10 @@ async function doExport(
 async function main(): Promise<void> {
   const args = parseArgs()
   console.log(`Using exporter ${args.exporterName} ...`)
-  const outputDir = getOutputDir(args.exporterName as Exporter, args.ignoreExistingOutputDir)
+  const outputDir = getOutputDir(
+    args.exporterName as Exporter,
+    args.ignoreExistingOutputDir
+  )
   console.log(`Using output directory ${outputDir} ...`)
   await doExport(args.exporterName as Exporter, outputDir, args.filter)
   console.log(`Export completed successfully. Saved to ${outputDir}`)
