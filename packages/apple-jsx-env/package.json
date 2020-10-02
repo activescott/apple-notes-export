@@ -1,0 +1,15 @@
+{
+  "name": "apple-jsx-env",
+  "version": "1.0.0",
+  "description": "",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "build": "rm -rfd ./dist; ./node_modules/.bin/tsc --project tsconfig.json",
+    "test": "echo \"See the apple-jsx-testing directory/package\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.0.3"
+  }
+}

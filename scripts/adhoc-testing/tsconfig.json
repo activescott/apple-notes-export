@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "lib": ["ES6", "ES2016.Array.Include", "ES2015.Promise", "ES2017.String", "DOM"],
+    "downlevelIteration": true
+  }
+}
