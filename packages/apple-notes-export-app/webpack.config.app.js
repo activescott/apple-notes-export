@@ -14,7 +14,16 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.ts$/, loader: "ts-loader" },
+      {
+        test: /\.ts$/, 
+        loader: "ts-loader",
+        options: {
+          configFile: "tsconfig.app.json",
+          reportFiles: [
+            "src/**/*.{ts,tsx}", "!src/cli.ts"
+          ]
+        }
+      },
       {
         test: /\.m?js$/,
         exclude: /(node_modules|bower_components)/,

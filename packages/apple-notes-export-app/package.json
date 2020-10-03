@@ -1,10 +1,20 @@
 {
   "name": "apple-notes-export",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "license": "MPL-2.0",
+  "description": "A script for programmatically exporting your data from the Apple Notes application.",
+  "author": "Scott Willeke <scott@willeke.com>",
+  "files": [
+    "/dist"
+  ],
+  "bin": {
+    "apple-notes-export": "dist/cli.js"
+  },
   "scripts": {
-    "build": "rm -f ./dist/*.* && webpack  && echo ''",
+    "build:app": "rm -f ./dist/*.* && webpack-cli --config webpack.config.app.js && echo ''",
+    "build:cli": "tsc --build tsconfig.cli.json",
+    "build": "npm run -s build:app && npm run -s build:cli",
     "start": "npm run build && osascript -l JavaScript dist/bundle.js",
     "eslint": "./node_modules/.bin/eslint . --ext ts,tsx,js,jsx",
     "lint": "./node_modules/.bin/prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,md,yml,json,html}\" && npm run eslint",
@@ -29,6 +39,7 @@
     "@babel/runtime": "^7.8.3",
     "@types/mime-types": "^2.1.0",
     "@types/minimist": "^1.2.0",
+    "@types/node": "^14.11.2",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
     "babel-loader": "^8.0.6",
@@ -39,7 +50,5 @@
     "typescript": "^3.7.5",
     "webpack": "^4.34.0",
     "webpack-cli": "^3.3.4"
-  },
-  "description": "A script for programmatically exporting your data from the Apple Notes application.",
-  "author": "Scott Willeke <scott@willeke.com>"
+  }
 }
