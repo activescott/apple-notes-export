@@ -1,11 +1,6 @@
 {
-  "include": [
-    "./src/**/*"
-  ],
-  "exclude": [
-    "**/*.spec.ts",
-    "node_modules"
-  ],
+  "include": ["./src/**/*"],
+  "exclude": ["**/*.spec.ts", "node_modules"],
   "compilerOptions": {
     "target": "es6",
     "module": "es6",

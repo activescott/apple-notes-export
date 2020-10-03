@@ -7,9 +7,9 @@
 import { spawnSync, SpawnSyncOptions } from "child_process"
 import * as path from "path"
 
-async function main() {
+async function main(): Promise<void> {
   const opts: SpawnSyncOptions = {
-    stdio: "inherit"
+    stdio: "inherit",
   }
 
   //osascript -l JavaScript dist/bundle.js
@@ -17,11 +17,10 @@ async function main() {
     "-l",
     "JavaScript",
     path.resolve("./dist/bundle.js"),
-    ...process.argv.slice(2)
+    // eslint-disable-next-line no-magic-numbers
+    ...process.argv.slice(2),
   ]
-  console.log(`Running osascript with args ${args}...`)
   const { status } = spawnSync("osascript", args, opts)
-  console.log("Running osascript complete.")
   process.exit(status)
 }
 

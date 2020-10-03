@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types,no-console */
 export const logger = (prefix: string) => (
   message?: any,
   ...optionalParams: any[]
-) => console.log(`[${prefix}] ` + message, optionalParams)
+): void => console.log(`[${prefix}] ` + message, optionalParams)

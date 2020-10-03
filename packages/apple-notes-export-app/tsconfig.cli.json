@@ -5,8 +5,6 @@
     "target": "ES5",
     "lib": ["ES6"],
     "downlevelIteration": true,
-    "types": [
-      "@types/node"
-    ]
+    "types": ["@types/node"]
   }
 }

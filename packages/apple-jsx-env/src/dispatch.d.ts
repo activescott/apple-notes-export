@@ -3,15 +3,12 @@
  * See https://developer.apple.com/documentation/dispatch
  */
 declare namespace Dispatch {
-  /* eslint-disable @typescript-eslint/camelcase, @typescript-eslint/class-name-casing */
   /**
    * https://developer.apple.com/documentation/dispatch/os_dispatch_object?language=objc
    */
-  interface OS_dispatch_semaphore
-    extends Foundation.NSObject<OS_dispatch_semaphore> {}
+  type OS_dispatch_semaphore = Foundation.NSObject<OS_dispatch_semaphore>
 
-  interface dispatch_semaphore_t
-    extends Foundation.NSObject<OS_dispatch_semaphore> {}
+  type dispatch_semaphore_t = Foundation.NSObject<OS_dispatch_semaphore>
 
   /**
    * An abstract representation of time.

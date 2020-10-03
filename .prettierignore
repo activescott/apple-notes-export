@@ -4,3 +4,21 @@ node_modules/
 .nyc_output/
 coverage/
 /data/
+
+# generated/built output:
+/packages/apple-notes-export-app/dist/
+/packages/apple-jsx-apps/index.d.ts
+/packages/apple-jsx-apps/lib/collections.d.ts
+/packages/apple-jsx-apps/notes/index.d.ts
+/packages/apple-jsx-apps/notes/NotesAccount.d.ts
+/packages/apple-jsx-apps/notes/NotesApp.d.ts
+/packages/apple-jsx-apps/notes/NotesAttachment.d.ts
+/packages/apple-jsx-apps/notes/NotesFolder.d.ts
+/packages/apple-jsx-apps/notes/NotesNote.d.ts
+/packages/apple-jsx/DispatchSemaphore.d.ts
+/packages/apple-jsx/fs.d.ts
+/packages/apple-jsx/index.d.ts
+/packages/apple-jsx/path.d.ts
+/packages/apple-jsx/process.d.ts
+/packages/apple-jsx/task.d.ts
+/packages/apple-jsx/task.js

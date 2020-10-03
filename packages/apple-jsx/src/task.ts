@@ -5,11 +5,16 @@
  * @param {(NSFileHandle|NSPipe)} stdin standard input for the receiver
  * @param {(NSFileHandle|NSPipe)} stdout standard output for the receiver
  */
-export function launchTask(executable, args, stdin, stdout): void {
+export function launchTask(
+  executable: string,
+  args: string[],
+  stdin: Foundation.NSFileHandle,
+  stdout: Foundation.NSFileHandle
+): void {
   // launch it:
   const task = $.NSTask.alloc.init
-  task.launchPath = executable
-  task.arguments = args
+  task.launchPath = ObjC.wrap(executable)
+  task.arguments = ObjC.wrap(args)
   if (stdin) task.standardOutput = stdin
   if (stdout) task.standardOutput = stdout
   // NOTE: weird ObjC crap: "If the ObjC method does not take arguments, then you invoke it by accessing the JavaScript property with that name. This example instantiates an empty mutable string." - https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-10.html#//apple_ref/doc/uid/TP40014508-CH109-SW20
@@ -18,11 +23,13 @@ export function launchTask(executable, args, stdin, stdout): void {
   task.waitUntilExit
 
   // if it failed, throw
-  const status = task.terminationStatus
+  const status = ObjC.unwrap(task.terminationStatus)
 
-  if (status.js !== 0) {
+  if (status !== 0) {
     throw new Error(
-      `Process ${executable} ${args ? args.join(" ") : ""} failed.`
+      `Process ${executable} ${
+        args ? args.join(" ") : ""
+      } failed with exist status '${status}'.`
     )
   }
 }

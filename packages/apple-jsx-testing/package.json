@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rm -f ./dist/*.* && webpack && echo ''",
+    "build": "rm -f ./dist/*.* && webpack-cli && echo ''",
     "build-all": "pushd . ; cd ../apple-jsx-env ; npm run build ; cd ../apple-jsx ; npm run build ; popd",
     "start": "npm run -s build && osascript -l JavaScript dist/bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"

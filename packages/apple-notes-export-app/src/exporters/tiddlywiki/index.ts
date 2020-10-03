@@ -2,7 +2,7 @@ import { AgentMarkdown } from "agentmarkdown"
 import {
   writeTextToFile,
   createDir,
-  fileExistsAtPath
+  fileExistsAtPath,
 } from "@activescott/apple-jsx/fs"
 import { logger } from "../../lib/logger"
 import { NotesNote } from "@activescott/apple-jsx-apps/notes"
@@ -115,7 +115,6 @@ function exportAttachment(
   noteTitle: string,
   notesTags: string[]
 ): void {
-  let hasSaveError = false
   const attachmentFilePath = resolveFilePathUnique(
     outputDir,
     safeFileName(attachment.name)
@@ -123,16 +122,14 @@ function exportAttachment(
   try {
     attachment.save(attachmentFilePath)
   } catch (err) {
-    hasSaveError = true
-
+    /* eslint-disable no-console,no-magic-numbers */
     console.log("\n" + "*".repeat(50))
     console.log(
       `Error saving attachment ${attachment.name} of note ${noteTitle}!`
     )
     console.log("*".repeat(50) + "\n")
-
+    /* eslint-enable no-console,no-magic-numbers */
     // TODO: Pass in a command line argument that allows continuing on failures; by default fail and stop
-
     return
   }
 
@@ -187,34 +184,16 @@ title: ${title}
 }
 
 const tagsStr = (tagsArray: string[]): string =>
-  tagsArray.map(tag => (tag.includes(" ") ? `[[${tag}]]` : tag)).join(" ")
+  tagsArray.map((tag) => (tag.includes(" ") ? `[[${tag}]]` : tag)).join(" ")
 
 /** Returns date like YYYYMMDDHHMMSSmmm */
 const dateStr = (date: Date): string =>
   /* eslint-disable no-magic-numbers */
   date.getUTCFullYear() +
-  date
-    .getUTCMonth()
-    .toString()
-    .padStart(2, "0") +
-  date
-    .getUTCDate()
-    .toString()
-    .padStart(2, "0") +
-  date
-    .getUTCHours()
-    .toString()
-    .padStart(2, "0") +
-  date
-    .getUTCMinutes()
-    .toString()
-    .padStart(2, "0") +
-  date
-    .getUTCSeconds()
-    .toString()
-    .padStart(2, "0") +
-  date
-    .getUTCMilliseconds()
-    .toString()
-    .padStart(3, "0")
+  date.getUTCMonth().toString().padStart(2, "0") +
+  date.getUTCDate().toString().padStart(2, "0") +
+  date.getUTCHours().toString().padStart(2, "0") +
+  date.getUTCMinutes().toString().padStart(2, "0") +
+  date.getUTCSeconds().toString().padStart(2, "0") +
+  date.getUTCMilliseconds().toString().padStart(3, "0")
 /* eslint-enable no-magic-numbers */

@@ -12,4 +12,7 @@ die () {
 }
 
 cd "$MYDIR/packages/apple-jsx-testing"
+rm -rf ./node_modules
+npm i
+npm run build
 npm run start

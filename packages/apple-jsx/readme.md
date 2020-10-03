@@ -1,10 +1,10 @@
-
 ## Notes
+
 There are three packages `apple-jsx` and `apple-jsx-env`:
 `apple-jsx-env` includes the globals and the types for the JavaScript for Automation host environment. The host environment can also be used to access "Objective C" frameworks. The `apple-jsx-env` package also contains types from some frameworks (mostly various types from foundation and dispatch).
 The `apple-jsx` depends on the previous and exports various abstractions that make jsx easier to work within the JSX host environment.
 
-Why multiple packages? It was difficult to get TypeScript to play nicely with a library that exported implementation files (*.ts) as well as declaration files (*.d.ts) in a single library. It would mangle the various triple-slash directives from `/// <reference path=...` to `/// <reference types=...` where the types value was meaningless to the consuming package without special tsconfig changes.
+Why multiple packages? It was difficult to get TypeScript to play nicely with a library that exported implementation files (_.ts) as well as declaration files (_.d.ts) in a single library. It would mangle the various triple-slash directives from `/// <reference path=...` to `/// <reference types=...` where the types value was meaningless to the consuming package without special tsconfig changes.
 
 ## Organization
 

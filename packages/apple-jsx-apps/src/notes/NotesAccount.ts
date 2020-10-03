@@ -40,7 +40,9 @@ export class NotesAccount {
       id: this.id,
       upgraded: this.upgraded(),
       folderCount: this.rawAccount.folders.length,
-      folders: arrayFromIterable(this.folders()).map(f => JSON.parse(f.toString()))
+      folders: arrayFromIterable(this.folders()).map((f) =>
+        JSON.parse(f.toString())
+      ),
     }
     return JSON.stringify(json)
   }
@@ -54,7 +56,7 @@ interface RawAccount {
   // the name of the account
   name(): string
   // Is the account upgraded?
-  upgraded():boolean
+  upgraded(): boolean
   // the unique identifier of the account
   id(): string
 }

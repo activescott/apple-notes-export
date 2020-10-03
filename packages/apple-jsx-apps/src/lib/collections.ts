@@ -1,13 +1,10 @@
 /// <reference types="@activescott/apple-jsx-env" />
 
 export function arrayFromIterable<T>(iterable: IterableIterator<T>): T[] {
-  console.log("arrayFromIterable...")
   const arr: T[] = []
   for (const item of iterable) {
-    console.log("arrayFromIterable item!")
     arr.push(item)
   }
-  console.log("arrayFromIterable.")
   return arr
 }
 
@@ -21,7 +18,8 @@ export function arrayFromIterable<T>(iterable: IterableIterator<T>): T[] {
  */
 export function arrayToIterable<T, TMapped>(
   array: Array<T>,
-  mapper: MapperFunction = identityMapper
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mapper: (item: T) => TMapped = (item) => (item as any) as TMapped
 ): Iterable<TMapped> {
   // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol
   const myIterable = {
@@ -32,12 +30,4 @@ export function arrayToIterable<T, TMapped>(
     },
   }
   return myIterable
-}
-
-interface MapperFunction {
-  (item: any): any
-}
-
-function identityMapper<T>(item: T): T {
-  return item
 }

@@ -32,7 +32,7 @@ export class NotesFolder {
    * Returns the note at the specified index.
    * @param {Number} index
    */
-  public noteAt(index): NotesNote {
+  public noteAt(index: number): NotesNote {
     return new NotesNote(this.rawFolder.notes[index], this)
   }
 
@@ -40,7 +40,7 @@ export class NotesFolder {
     const json = {
       name: this.name,
       id: this.id,
-      folders: Array.from(this.folders()).map(f => JSON.parse(f.toString()))
+      folders: Array.from(this.folders()).map((f) => JSON.parse(f.toString())),
     }
     return JSON.stringify(json)
   }

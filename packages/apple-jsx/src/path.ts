@@ -14,6 +14,7 @@ interface ParsedPath {
   ext: string
 }
 
+/* eslint-disable complexity,no-magic-numbers */
 /**
  * returns an object whose properties represent significant elements of the path. Trailing directory separators are ignored.
  * See https://nodejs.org/api/path.html#path_path_parse_path
@@ -92,3 +93,4 @@ export function parse(path: string): ParsedPath {
 
   return ret
 }
+/* eslint-enable complexity */

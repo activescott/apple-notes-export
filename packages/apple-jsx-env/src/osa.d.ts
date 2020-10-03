@@ -57,4 +57,3 @@ declare const Console: {
 }
 
 declare const console: Console
-

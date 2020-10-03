@@ -1,0 +1,26 @@
+{
+  "name": "apple-notes-export-dev",
+  "private": "true",
+  "scripts": {
+    "eslint": "./node_modules/.bin/eslint . --ext ts,tsx,js,jsx",
+    "lint": "./node_modules/.bin/prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,md,yml,json,html}\" && npm run eslint",
+    "lint-fix": "./node_modules/.bin/prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,md,yml,json,html}\" && npm run eslint --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/activescott/apple-notes-export.git"
+  },
+  "bugs": {
+    "url": "https://github.com/activescott/apple-notes-export/issues"
+  },
+  "homepage": "https://github.com/activescott/apple-notes-export#readme",
+  "devDependencies": {
+    "@activescott/eslint-config": "^2.2.0",
+    "@typescript-eslint/eslint-plugin": "^4.3.0",
+    "@typescript-eslint/parser": "^4.3.0",
+    "eslint": "^7.10.0",
+    "eslint-config-prettier": "^6.12.0",
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.3"
+  }
+}

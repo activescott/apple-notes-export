@@ -3,11 +3,13 @@
  * See https://developer.apple.com/documentation/foundation
  */
 declare namespace Foundation {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   /**
    * Defines the members of the NSObject class/type
    * https://developer.apple.com/documentation/objectivec/nsobject
    */
-  interface NSObject<T extends NSObject<T>, TJSType=any> extends BridgedObject<TJSType> {
+  interface NSObject<T extends NSObject<T>, TJSType = any>
+    extends BridgedObject<TJSType> {
     /**
      * Returns a new instance of the receiving class.
      */
@@ -17,6 +19,7 @@ declare namespace Foundation {
      */
     init: T
   }
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   interface NSString extends NSObject<NSString, string> {
     /**
@@ -49,23 +52,21 @@ declare namespace Foundation {
   /**
    * These values represent the various character encodings supported by the NSString classes.
    * See https://developer.apple.com/documentation/foundation/nsstringencoding?language=objc
-   * 
+   *
    * NOTE: In the JSX environment access these from the global `$` such as `$.NSUTF8StringEncoding`.
    */
   export type NSStringEncoding = number
-  
 
   /**
    * A static ordered collection of objects.
    * https://developer.apple.com/documentation/foundation/nsarray?language=objc
    */
-  interface NSArray<ObjectType> extends NSObject<NSArray<ObjectType>> {}
+  type NSArray<ObjectType> = NSObject<NSArray<ObjectType>>
 
-  interface NSData extends NSObject<NSData> {}
+  type NSData = NSObject<NSData>
 
-  interface NSDictionary<KeyType, ObjectType> extends NSObject<
-    NSDictionary<KeyType, ObjectType>
-  > {
+  interface NSDictionary<KeyType, ObjectType>
+    extends NSObject<NSDictionary<KeyType, ObjectType>> {
     count: BridgedObject<number>
   }
 
@@ -143,12 +144,6 @@ declare namespace Foundation {
      * @param path The path of the file whose contents you want.
      */
     contentsAtPath(path: NSString): NSData
-
-    /**
-    * Returns the path of the temporary directory for the current user.
-    * https://developer.apple.com/documentation/foundation/1409211-nstemporarydirectory
-    */
-    temporaryDirectory: string // TODO: THIS RIGHT??
   }
 
   type NSFileAttributeKey = string
@@ -184,6 +179,7 @@ declare namespace Foundation {
     arguments: BridgedObject<Array<string>>
     standardInput: NSFileHandle
     standardOutput: NSFileHandle
+    standardError: NSFileHandle
     /**
      * Launches the task represented by the receiver.
      * NOTE: This is a method, but the JXA bridge is crazy: "If the ObjC method does not take arguments, then you invoke it by accessing the JavaScript property with that name."

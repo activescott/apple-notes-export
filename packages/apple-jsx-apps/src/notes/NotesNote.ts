@@ -38,14 +38,14 @@ export class NotesNote {
     const pathObj = Path(path)
     this.rawNote.save({
       in: pathObj,
-      as: "native format"
+      as: "native format",
     })
   }
 
   public toString(): string {
     const json = {
       ...this,
-      attachments: Array.from(this.attachments()).map(a => a.toJson())
+      attachments: Array.from(this.attachments()).map((a) => a.toJson()),
     }
     return JSON.stringify(json)
   }

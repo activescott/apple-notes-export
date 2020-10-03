@@ -1,13 +1,15 @@
 let INDENT_COUNT = 0
-const indent = () => INDENT_COUNT++
-const outdent = () => INDENT_COUNT--
-const indentCount = () => INDENT_COUNT
+const indent = (): number => INDENT_COUNT++
+const outdent = (): number => INDENT_COUNT--
+const indentCount = (): number => INDENT_COUNT
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function testLog(message?: any, ...optionalParams: any[]): void {
+  // eslint-disable-next-line no-console
   console.log(" ".repeat(indentCount()) + message, optionalParams)
 }
 
-export function describe(suite: string, suiteHandler: () => void) {
+export function describe(suite: string, suiteHandler: () => void): void {
   testLog(`🎬 running suite ${suite}`)
   indent()
   try {
@@ -17,7 +19,10 @@ export function describe(suite: string, suiteHandler: () => void) {
   }
 }
 
-export function test(testName: string, testHandler: () => void) {
+export const test: TestFunction = (
+  testName: string,
+  testHandler: () => void
+): void => {
   testLog(`🎬 running test ${testName}...`)
   indent()
   try {
@@ -31,3 +36,9 @@ export function test(testName: string, testHandler: () => void) {
   }
 }
 
+test.todo = (testName: string) => testLog(`⚠️ ${testName} needs written!`)
+
+interface TestFunction {
+  todo: (testName: string) => void
+  (testName: string, testHandler: () => void)
+}

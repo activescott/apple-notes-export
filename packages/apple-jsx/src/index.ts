@@ -7,5 +7,5 @@ import { parse } from @activescott/apple-jsx/path
 import { env } from @activescott/apple-jsx/process
 
 
- */ 
- export { DispatchSemaphore } from "./DispatchSemaphore"
+ */
+export { DispatchSemaphore } from "./DispatchSemaphore"

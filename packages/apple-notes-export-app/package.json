@@ -15,10 +15,7 @@
     "build:app": "rm -f ./dist/*.* && webpack-cli --config webpack.config.app.js && echo ''",
     "build:cli": "tsc --build tsconfig.cli.json",
     "build": "npm run -s build:app && npm run -s build:cli",
-    "start": "npm run build && osascript -l JavaScript dist/bundle.js",
-    "eslint": "./node_modules/.bin/eslint . --ext ts,tsx,js,jsx",
-    "lint": "./node_modules/.bin/prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,md,yml,json,html}\" && npm run eslint",
-    "lint-fix": "./node_modules/.bin/prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,md,yml,json,html}\" && npm run eslint --fix"
+    "start": "npm run build && osascript -l JavaScript dist/bundle.js"
   },
   "dependencies": {
     "@activescott/apple-jsx": "file:../apple-jsx",
@@ -31,7 +28,6 @@
     "minimist": "^1.2.5"
   },
   "devDependencies": {
-    "@activescott/eslint-config": "^1.1.2",
     "@babel/core": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
@@ -40,12 +36,7 @@
     "@types/mime-types": "^2.1.0",
     "@types/minimist": "^1.2.0",
     "@types/node": "^14.11.2",
-    "@typescript-eslint/eslint-plugin": "^2.18.0",
-    "@typescript-eslint/parser": "^2.18.0",
     "babel-loader": "^8.0.6",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "prettier": "^1.19.1",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
     "webpack": "^4.34.0",

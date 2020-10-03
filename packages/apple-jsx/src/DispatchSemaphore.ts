@@ -1,6 +1,5 @@
 /// <reference types="@activescott/apple-jsx-env" />
 
-/* eslint-disable @typescript-eslint/camelcase */
 ObjC.import("dispatch")
 
 /**
@@ -32,12 +31,12 @@ export class DispatchSemaphore {
     const sema = new DispatchSemaphore(0)
 
     promise
-      .then(result => {
+      .then((result) => {
         finalResult = result
         log("then result:", result)
         sema.signal()
       })
-      .catch(reason => {
+      .catch((reason) => {
         finalReason = reason
         log("catch error:", reason)
         sema.signal()

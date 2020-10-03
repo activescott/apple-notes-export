@@ -2,7 +2,7 @@ import {
   writeTextToFile,
   resolveRelativePath,
   createFileAtPath,
-  fileHandleForWritingAtPath
+  fileHandleForWritingAtPath,
 } from "@activescott/apple-jsx/fs"
 import { launchTask } from "@activescott/apple-jsx/task"
 
@@ -11,7 +11,10 @@ import { launchTask } from "@activescott/apple-jsx/task"
  * At one point, I couldn't get AgentMarkdown ro run in OSAJavaScript, so it runs AgentMarkdown by spawning a separate process and route input and output via files.
  * I later figured out how to do that, so maybe this is all useless now, but it serves as an interesting demo/test of some of the Objective-C it is referencing.
  */
-export function writeHtmlToMarkdownFile(html, outputPath): void {
+export function writeHtmlToMarkdownFile(
+  html: string,
+  outputPath: string
+): void {
   // first write the HTML string to a temp file:
   const slash = outputPath.lastIndexOf("/")
   const htmlFilePart = outputPath.slice(slash ? slash : 0)

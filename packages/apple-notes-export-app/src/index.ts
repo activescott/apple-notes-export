@@ -6,7 +6,7 @@ import { args } from "@activescott/apple-jsx/process"
 import {
   resolveRelativePath,
   fileExistsAtPath,
-  createDir
+  createDir,
 } from "@activescott/apple-jsx/fs"
 import { logger } from "./lib/logger"
 import * as minimist from "minimist"
@@ -17,7 +17,7 @@ type Exporter = "tiddlywiki" | "boostnote"
 // maps exporter name to exportNote function:
 const exporterNameMap = {
   boostnote: exportBoostnote,
-  tiddlywiki: exportTiddly
+  tiddlywiki: exportTiddly,
 }
 
 function showHelp(): void {
@@ -49,8 +49,8 @@ function parseArgs(): {
     alias: {
       help: "h",
       filter: "f",
-      ignore: "i"
-    }
+      ignore: "i",
+    },
   })
 
   if (argv.h) showHelp()
@@ -77,7 +77,7 @@ function parseArgs(): {
   return {
     exporterName,
     filter: argv.filter ?? "",
-    ignoreExistingOutputDir: argv.ignore ? true : false
+    ignoreExistingOutputDir: argv.ignore ? true : false,
   }
 }
 

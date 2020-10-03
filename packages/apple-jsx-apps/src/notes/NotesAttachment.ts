@@ -18,7 +18,7 @@ export class NotesAttachment {
     const pathObj = Path(path)
     this.rawAttachment.save({
       in: pathObj,
-      as: "native format"
+      as: "native format",
     })
   }
 

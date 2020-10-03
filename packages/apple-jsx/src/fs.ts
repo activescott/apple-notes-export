@@ -32,7 +32,7 @@ export function resolveRelativePath(relativePath: string): string {
   return Path(expanded.js).toString()
 }
 
-export function createDir(path): void {
+export function createDir(path: string): void {
   // see https://developer.apple.com/documentation/foundation/nsfilemanager/1407884-createdirectoryatpath?language=objc
   const createIntermediates = true
   // for info on nil: https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-10.html#//apple_ref/doc/uid/TP40014508-CH109-SW26
@@ -64,7 +64,10 @@ export function createFileAtPath(path: string): void {
   )
 }
 
-export function moveItem(srcPath: Foundation.NSString, dstPath: Foundation.NSString): void {
+export function moveItem(
+  srcPath: Foundation.NSString,
+  dstPath: Foundation.NSString
+): void {
   // for details on how to handle Ref: https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-10.html#//apple_ref/doc/uid/TP40014508-CH109-SW28
   const refError = Ref<Foundation.NSError>()
   $.NSFileManager.defaultManager.moveItemAtPathToPathError(
@@ -81,7 +84,9 @@ export function moveItem(srcPath: Foundation.NSString, dstPath: Foundation.NSStr
  * nil if no file exists at path.
  * @param {string} path Path to file.
  */
-export function fileHandleForWritingAtPath(path: string): Foundation.NSFileHandle {
+export function fileHandleForWritingAtPath(
+  path: string
+): Foundation.NSFileHandle {
   // see https://developer.apple.com/documentation/foundation/nsfilehandle/1414405-filehandleforwritingatpath?language=objc
   return $.NSFileHandle.fileHandleForWritingAtPath(path)
 }

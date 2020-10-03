@@ -23,7 +23,6 @@ declare interface BridgedObject<TJSType> {
  */
 declare function $<T>(): RefObject<T>
 
-/* eslint-disable @typescript-eslint/camelcase */
 /**
  * JavaScript for Automation has a built-in Objective-C bridge that enables you to access the file system and build Cocoa applications.
  * The primary access points for the Objective-C bridge are the global properties ObjC and $.
@@ -44,13 +43,17 @@ declare namespace $ {
    * https://developer.apple.com/documentation/dispatch/1452955-dispatch_semaphore_create?language=objc
    * @param value The starting value for the semaphore. Do not pass a value less than zero.
    */
-  function dispatch_semaphore_create(value: number): Dispatch.dispatch_semaphore_t
+  function dispatch_semaphore_create(
+    value: number
+  ): Dispatch.dispatch_semaphore_t
 
   /**
    * Signals (increments) a semaphore.
    * https://developer.apple.com/documentation/dispatch/1452919-dispatch_semaphore_signal?language=objc
    */
-  function dispatch_semaphore_signal(dsema: Dispatch.dispatch_semaphore_t): number
+  function dispatch_semaphore_signal(
+    dsema: Dispatch.dispatch_semaphore_t
+  ): number
 
   /**
    * Waits for (decrements) a semaphore.
@@ -66,7 +69,7 @@ declare namespace $ {
    * https://developer.apple.com/documentation/dispatch/dispatch_time_forever?language=objc
    */
   const DISPATCH_TIME_FOREVER: number
-  
+
   const NSUTF8StringEncoding: Foundation.NSStringEncoding
   const NSASCIIStringEncoding: Foundation.NSStringEncoding
   const NSNEXTSTEPStringEncoding: Foundation.NSStringEncoding
@@ -78,7 +81,7 @@ declare namespace $ {
   const NSISOLatin2StringEncoding: Foundation.NSStringEncoding
 }
 
-declare var ObjC: ObjCType
+declare const ObjC: ObjCType
 
 declare interface ObjCType {
   /**
@@ -128,7 +131,8 @@ declare interface RefObject<T> {
 declare function Ref<T>(): RefObject<T>
 declare function Ref<T>(value: T): RefObject<T>
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * see https://developer.apple.com/documentation/objectivec/id & https://stackoverflow.com/questions/7987060/what-is-the-meaning-of-id
- */ 
+ */
 declare type id = any
