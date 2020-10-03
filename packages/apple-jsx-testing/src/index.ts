@@ -1,6 +1,7 @@
 import expect from "expect.js"
 import { describe, test } from "./zoot"
-import { fs, process } from "@activescott/apple-jsx"
+import fs from "@activescott/apple-jsx/fs"
+import process from "@activescott/apple-jsx/process"
 
 describe("objective-c api", () => {
   describe("process", () => {

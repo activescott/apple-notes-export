@@ -3,7 +3,7 @@ import { NotesFolder } from "./NotesFolder"
 import { NotesAccount } from "./NotesAccount"
 
 export class NotesApp {
-  private readonly rawApp: Application
+  private readonly rawApp: ApplicationClass
   public constructor() {
     this.rawApp = Application("Notes")
   }

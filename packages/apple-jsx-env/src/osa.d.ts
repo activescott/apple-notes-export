@@ -15,16 +15,16 @@ declare class Automation {
   /* eslint-disable @typescript-eslint/no-explicit-any */
 }
 
-declare class Application {
+declare class ApplicationClass {
   [name: string]: any
-  public static currentApplication(): any
+  public static currentApplication(): ApplicationClass
 }
 
 /**
  * Allows accessing a macOS Application.
  * @param app The name, bundle ID, path, process ID, or remote machine eppc reference.
  */
-declare function Application(app: string): Application
+declare function Application(app: string): ApplicationClass
 
 //TODO: Library
 
