@@ -11,6 +11,9 @@
     "lint-fix": "./node_modules/.bin/prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,md,yml,json,html}\" && npm run eslint --fix"
   },
   "dependencies": {
+    "@activescott/apple-jsx": "file:../apple-jsx",
+    "@activescott/apple-jsx-apps": "file:../apple-jsx-apps",
+    "@activescott/apple-jsx-env": "file:../apple-jsx-env",
     "@babel/polyfill": "^7.8.3",
     "agentmarkdown": "^4.2.2",
     "core-js": "3",

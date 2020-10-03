@@ -1,7 +1,6 @@
 import { NotesNote } from "./NotesNote"
 import { NotesFolder } from "./NotesFolder"
 import { NotesAccount } from "./NotesAccount"
-/// <reference path="../../../../packages/jsx/osa/index.d.ts" />
 
 export class NotesApp {
   private readonly rawApp: Application

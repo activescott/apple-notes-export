@@ -1,4 +1,4 @@
-
+/// <reference types="@activescott/apple-jsx-env" />
 
 export function arrayFromIterable<T>(iterable: IterableIterator<T>): T[] {
   console.log("arrayFromIterable...")
@@ -19,14 +19,17 @@ export function arrayFromIterable<T>(iterable: IterableIterator<T>): T[] {
  * @param array The JSX array to make iterable.
  * @param mapper The mapping function if needed.
  */
-export function arrayToIterable<T, TMapped>(array: Array<T>, mapper: MapperFunction = identityMapper): Iterable<TMapped> {
+export function arrayToIterable<T, TMapped>(
+  array: Array<T>,
+  mapper: MapperFunction = identityMapper
+): Iterable<TMapped> {
   // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol
   const myIterable = {
     [Symbol.iterator]: function* () {
       for (let i = 0; i < array.length; i++) {
         yield mapper(array[i])
       }
-    }
+    },
   }
   return myIterable
 }
@@ -38,5 +41,3 @@ interface MapperFunction {
 function identityMapper<T>(item: T): T {
   return item
 }
-
-

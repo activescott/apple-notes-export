@@ -1,13 +1,13 @@
 import { exportNote as exportBoostnote } from "./exporters/boostnote"
 import { exportNote as exportTiddly } from "./exporters/tiddlywiki"
-import { NotesApp } from "../packages/Applications/AppleNotes"
-import { DispatchSemaphore } from "../packages/jsx/abstractions/DispatchSemaphore"
-import { args } from "../packages/jsx/abstractions/process"
+import { NotesApp } from "@activescott/apple-jsx-apps/notes"
+import { DispatchSemaphore } from "@activescott/apple-jsx"
+import { args } from "@activescott/apple-jsx/process"
 import {
   resolveRelativePath,
   fileExistsAtPath,
   createDir
-} from "../packages/jsx/abstractions/fs"
+} from "@activescott/apple-jsx/fs"
 import { logger } from "./lib/logger"
 import * as minimist from "minimist"
 

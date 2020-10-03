@@ -3,8 +3,8 @@ import {
   resolveRelativePath,
   createFileAtPath,
   fileHandleForWritingAtPath
-} from "../../packages/jsx/abstractions/fs"
-import { launchTask } from "../../packages/jsx/abstractions/task"
+} from "@activescott/apple-jsx/fs"
+import { launchTask } from "@activescott/apple-jsx/task"
 
 /**
  * This is a helper to use AgentMarkdown to convert Apple-Notes-style HTML (i.e. non-confirming HTML) to markdown.

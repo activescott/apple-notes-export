@@ -1,4 +1,4 @@
-import { arrayFromIterable } from "./lib/collections"
+import { arrayFromIterable } from "../lib/collections"
 import { NotesFolder, NotesRawFolder } from "./NotesFolder"
 import { NotesNote, NotesRawNote } from "./NotesNote"
 

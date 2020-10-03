@@ -4,3 +4,4 @@ node_modules/
 /dist/
 scripts/adhoc-testing.bundle.js
 /data/
+/scripts/adhoc-testing/index.bundle.js

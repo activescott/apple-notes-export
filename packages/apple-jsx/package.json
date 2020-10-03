@@ -2,10 +2,10 @@
   "name": "@activescott/apple-jsx",
   "version": "1.0.0",
   "description": "Provides the types to support Apple's JavaScript for Automation which provides the ability to use JavaScript for interapplication communication between apps in OS X.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "build": "rm -rfd ./dist; ./node_modules/.bin/tsc --project tsconfig.json",
+    "build": "./node_modules/.bin/tsc --project tsconfig.json",
     "test": "echo \"See the apple-jsx-testing directory/package\" && exit 1"
   },
   "author": "scott@willeke.com",

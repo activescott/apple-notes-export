@@ -76,10 +76,14 @@ The big thing to note is that on the surface this looks like a Node.js/TypeScrip
 
 ## Todo
 
+- Get apple-notes-export package working again:
+  - Use [bundleDependencies](https://docs.npmjs.com/files/package.json#bundleddependencies) to bundle all depends on the apple-notes-export package.
+  - Some simple test for apple-notes-export that mocks underlying AppleNotes API
 - Tests:
+  - for some integration tests it might be reasonable to fill some folders with json files representing the raw directories and AppleNotes content
   - exporters: unit tests (mock out jsx, etc.)
     - unit test `exportNote` function of each exporter, mock `NotesNote`
   - for `packages/Applications/AppleNotes`:
     - mock out the `raw*` stuff and put a unit test for each.
 - shebang bin to make this easier to run than using `npm start` so it could be run with `npx` directly.
-- Break `packages/jsx/*` out into it's own published package. A fair bit of value has built up in there that is probably worth publishing and testing independently.
+- Publish `packages/apple-jsx-env` & `packages/apple-jsx`. A fair bit of value has built up in there that is probably worth publishing and testing independently.

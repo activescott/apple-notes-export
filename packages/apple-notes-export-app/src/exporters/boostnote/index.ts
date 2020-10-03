@@ -1,5 +1,5 @@
-import { writeTextToFile } from "../../../packages/jsx/abstractions/fs"
-import { NotesNote } from "../../../packages/Applications/AppleNotes/NotesNote"
+import { NotesNote } from "@activescott/apple-jsx-apps/notes"
+import { writeTextToFile } from "@activescott/apple-jsx/fs"
 import { uuidv4 } from "../../lib/uuid"
 
 /**

@@ -1,5 +1,5 @@
 {
-  "name": "apple-jsx-env",
+  "name": "@activescott/apple-jsx-env",
   "version": "1.0.0",
   "description": "",
   "types": "src/index.d.ts",

@@ -1,0 +1,22 @@
+{
+  "name": "@activescott/apple-jsx-apps",
+  "version": "1.0.0",
+  "description": "Provides the types in the scripting dictionaries (i.e. object model) of Apple applications for access in the JavaScript for Automation (JSX) Open Scripting Architecture (OSA) environment.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "clean": "rm -rf ./notes/ ; rm -f index.d.ts index.js",
+    "prebuild": "npm run -s clean",
+    "build": "./node_modules/.bin/tsc --project tsconfig.json",
+    "test": "echo \"TODO\" && exit 1"
+  },
+  "author": "scott@willeke.com",
+  "license": "ISC",
+  "devDependencies": {
+    "core-js": "^3.6.5",
+    "typescript": "~4.0.3"
+  },
+  "dependencies": {
+    "@activescott/apple-jsx-env": "../apple-jsx-env"
+  }
+}

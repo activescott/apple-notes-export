@@ -3,12 +3,12 @@ import {
   writeTextToFile,
   createDir,
   fileExistsAtPath
-} from "../../../packages/jsx/abstractions/fs"
+} from "@activescott/apple-jsx/fs"
 import { logger } from "../../lib/logger"
-import { NotesNote } from "../../../packages/Applications/AppleNotes/NotesNote"
-import { NotesAttachment } from "../../../packages/Applications/AppleNotes/NotesAttachment"
+import { NotesNote } from "@activescott/apple-jsx-apps/notes"
+import { NotesAttachment } from "@activescott/apple-jsx-apps/notes"
 import * as mimeTypes from "mime-types"
-import { parse } from "../../../packages/jsx/abstractions/path"
+import { parse } from "@activescott/apple-jsx/path"
 
 export async function exportNote(
   note: NotesNote,

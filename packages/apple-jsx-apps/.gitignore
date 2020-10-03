@@ -1,0 +1,8 @@
+package-lock.json
+# ensure that /src/* isn't ignored
+!src/**/*.ts
+# we ignore /index.d.ts, /index.js, and /notes* because they are actually the outputted files from npm build script and they get the package layout we want so people can import correctly.
+/index.d.ts
+/index.js
+/notes/
+/lib/
