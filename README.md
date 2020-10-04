@@ -84,7 +84,7 @@ To build all the packages run [`/build.sh`](/build.sh). There's no magic in ther
 
 ### Packages / Repo Layout
 
-For an overview of the packages see [the readme in the packages folder](/packages/readme.md).
+For an overview of the packages see [the README in the packages folder](/packages/README.md).
 
 ### Notes on Developing with JavaScript for Automation
 
