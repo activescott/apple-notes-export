@@ -10,13 +10,14 @@ import * as path from "path"
 async function main(): Promise<void> {
   const opts: SpawnSyncOptions = {
     stdio: "inherit",
+    cwd: __dirname,
   }
 
   //osascript -l JavaScript dist/bundle.js
   const args: string[] = [
     "-l",
     "JavaScript",
-    path.resolve("./dist/bundle.js"),
+    path.resolve(__dirname, "./bundle.js"),
     // eslint-disable-next-line no-magic-numbers
     ...process.argv.slice(2),
   ]
