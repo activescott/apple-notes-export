@@ -16,7 +16,7 @@ You'll need a recent version of macOS and a recent node.js installed.
 
 ### Building
 
-First thing you'll need to do is build it. Just run [`/build.sh`](blob/master/build.sh) from the root.
+First thing you'll need to do is build it. Just run [`/build.sh`](/build.sh) from the root.
 
 ### Running & Exporting
 
@@ -80,11 +80,11 @@ The big thing to note is that on the surface this looks like a normal Node.js/Ty
 
 ### Building
 
-To build all the packages run [`/build.sh`](blob/master/build.sh). There's no magic in there so it's a good reference to understand what's going on.
+To build all the packages run [`/build.sh`](/build.sh). There's no magic in there so it's a good reference to understand what's going on.
 
 ### Packages / Repo Layout
 
-For an overview of the packages see [the readme in the packages folder](blob/master/packages/readme.md).
+For an overview of the packages see [the readme in the packages folder](/packages/readme.md).
 
 ### Notes on Developing with JavaScript for Automation
 
