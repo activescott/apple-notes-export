@@ -3,21 +3,37 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-A tool to export Apple Notes to Markdown, TiddlyWiki, Boostnote, and more!
+A hack to free your notes from Apple Notes to markdown for use in TiddlyWiki, Boostnote, and more!
 
 ## Usage
 
-It must be run on macOS under the account/login that you want to access Apple Notes data from.
+This is a hack at this point and I haven't published any of the packages to npm. I'm open to publishing them to make them easier to use if people are interested. Just [submit a request here](https://github.com/activescott/apple-notes-export/issues) if you're interested.
 
-To run the tool run the following from the root of the repo:
+#### Prerequisites
+
+It must be run on macOS under the account/login that you want to access Apple Notes data from.
+You'll need a recent version of macOS and a recent node.js installed.
+
+### Building
+
+First thing you'll need to do is build it. Just run [`/build.sh`](blob/master/build.sh) from the root.
+
+### Running & Exporting
+
+To run the tool run the following from the root of the repo. Running without any arguments will print the help:
+
+    node ./packages/apple-notes-export-app/dist/cli.js
+
+To export to markdown/tiddlywiki:
+
+    node ./packages/apple-notes-export-app/dist/cli.js tiddlywiki
 
 NOTE: Tiddlywiki essentially stores files as markdown files (e.g. `filename.md`) with an adjacent `.meta` file (e.g. `filename.md.meta`). So if you want your Apple Notes exported to plain markdown files use TiddlyWiki.
-
-To export to tiddlywiki/markdown:
-
-    npm start tiddlywiki
-
 The above will export all notes, next go to the output directory that it exported to (by default to `~/Downloads/apple-notes-export/tiddlywiki/`)
+
+#### Opening in TiddlyWiki
+
+To open and run TiddlyWiki to see your notes use the following steps:
 
     cd ~/Downloads/apple-notes-export/tiddlywiki/
 
@@ -41,20 +57,18 @@ Click on the **More** tab on the right sidebar. Then select the **Tags** tab bel
 
 If you want to filter by a specific note use the `--filter` arg:
 
-    npm run start -- tiddlywiki --filter "my note name"
+    node ./packages/apple-notes-export-app/dist/cli.js tiddlywiki --filter "my note name"
 
-For more options, run
+For more options, run:
 
-    npm run start -- tiddlywiki --filter "my note name"
+    node ./packages/apple-notes-export-app/dist/cli.js --help
 
-## Boostnote
+### Exporting to Boostnote
 
-TODO!!!
-
-**NOTE: Boostenote support worked at one moment in time and I imagine it is still pretty close, but it definitely needs work. I'd love contributions!**
+**NOTE: Boostenote support worked at one moment in time and I imagine it is still pretty close, but it definitely needs testing / work. I'd love contributions!**
 
     # export to boostnote:
-    npm start boostnote
+    node ./packages/apple-notes-export-app/dist/cli.js boostnote
 
 ## Contributing
 
@@ -62,28 +76,24 @@ YOU are welcome to contribute! Please submit pull requests!
 
 ## Developing
 
-The big thing to note is that on the surface this looks like a Node.js/TypeScript project but it is not! It uses the [`osascript` command-line tool](https://support.apple.com/guide/terminal/automate-tasks-using-applescript-and-terminal-trml1003/mac) to run the TypeScript (converted to JavaScript and bundled with Webpack) in Apple's "JavaScript for Automation" (JXA) which is part of the [Open Scripting Architecture (OSA)](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptX/Concepts/osa.html#//apple_ref/doc/uid/TP40001571). It makes fairly extensive use of the Objective/C bridging to directly reference Objective/C SDK to make this all work. There are a bunch of abstractions and types in the subdirectories of `packages/jsx/` that make this more manageable.
+The big thing to note is that on the surface this looks like a normal Node.js/TypeScript project but it is not! It uses the [`osascript` command-line tool](https://support.apple.com/guide/terminal/automate-tasks-using-applescript-and-terminal-trml1003/mac) (`osascript` is kinda like node.js but _much_ more limited) to run the TypeScript (converted to JavaScript and bundled with Webpack) in Apple's "JavaScript for Automation" (JXA) which is part of the [Open Scripting Architecture (OSA)](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptX/Concepts/osa.html#//apple_ref/doc/uid/TP40001571). It makes fairly extensive use of the Objective/C bridging to directly reference Objective/C SDK to make this all work.
 
-### Developing with JavaScript for Automation
+### Building
 
-- You must use the osascript command-line tool to run it.
-  MISC Syntax notes:
+To build all the packages run [`/build.sh`](blob/master/build.sh). There's no magic in there so it's a good reference to understand what's going on.
 
-* To send the get event to the external entity and return its value, call the property as a function!
-  Debugging Notes:
-* enter the command `debugger` into a script to stop it in safari's debugger.
-* See https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-11.html#//apple_ref/doc/uid/TP40014508-CH110-SW3
+### Packages / Repo Layout
 
-## Todo
+For an overview of the packages see [the readme in the packages folder](blob/master/packages/readme.md).
 
-- Get apple-notes-export package working again:
-  - Use [bundleDependencies](https://docs.npmjs.com/files/package.json#bundleddependencies) to bundle all depends on the apple-notes-export package.
-  - Some simple test for apple-notes-export that mocks underlying AppleNotes API
-- Tests:
-  - for some integration tests it might be reasonable to fill some folders with json files representing the raw directories and AppleNotes content
-  - exporters: unit tests (mock out jsx, etc.)
-    - unit test `exportNote` function of each exporter, mock `NotesNote`
-  - for `packages/Applications/AppleNotes`:
-    - mock out the `raw*` stuff and put a unit test for each.
-- shebang bin to make this easier to run than using `npm start` so it could be run with `npx` directly.
-- Publish `packages/apple-jsx-env` & `packages/apple-jsx`. A fair bit of value has built up in there that is probably worth publishing and testing independently.
+### Notes on Developing with JavaScript for Automation
+
+- To send the get event to the external entity and return its value, call the property as a function!
+- enter the command `debugger` into a script to stop it in safari's debugger: See https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/OSX10-11.html#//apple_ref/doc/uid/TP40014508-CH110-SW3
+
+## References
+
+- [JavaScript for Automation Release Notes](https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/Introduction.html#//apple_ref/doc/uid/TP40014508-CH111-SW1) is the official reference for JavaScript for Automation (JSX) which is the component that provides the JavaScript language in the Open Scripting Architecture (OSA) environment (of which the other notable language is AppleScript).
+- [Open Scripting Architecture (OSA)](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptX/Concepts/osa.html#//apple_ref/doc/uid/TP40001571) is the official reference for the Open Scripting Architecture built into macOS.
+- [Mac Automation Scripting Guide](https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/index.html#//apple_ref/doc/uid/TP40016239-CH56-SW1) is an archived summary of AppleScript and links to JavaScript for Automation topics.
+- [Foundation Framework in Apple Developer Documentation](https://developer.apple.com/documentation/foundation?language=objc) is the Foundation Framework which provides access to the "essential data types, collections, and operating-system services to define the base layer of functionality for your app" for any macOS application.
